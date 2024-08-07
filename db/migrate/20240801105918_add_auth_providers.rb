@@ -1,6 +1,7 @@
-class AddSamlProvider < ActiveRecord::Migration[7.1]
+class AddAuthProviders < ActiveRecord::Migration[7.1]
   def change
-    create_table :saml_providers do |t|
+    create_table :auth_providers do |t|
+      t.string :type, null: false
       t.string :display_name, null: false, index: { unique: true }
       t.boolean :available, null: false, default: true
       t.boolean :limit_self_registration, null: false, default: false

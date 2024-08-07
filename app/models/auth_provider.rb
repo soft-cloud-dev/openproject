@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,10 +25,24 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Saml
-  module Providers
-    class CreateContract < BaseContract
-      attribute :type
-    end
+
+class AuthProvider < ApplicationRecord
+  belongs_to :creator, class_name: "User"
+
+  validates :display_name, presence: true
+  validates :display_name, uniqueness: true
+
+  def self.url_fragment
+    raise NotImplementedError
+  end
+  delegate :url_fragment, to: :class
+
+  def auth_url
+    root_url = OpenProject::StaticRouting::StaticUrlHelpers.new.root_url
+    URI.join(root_url, "/auth/#{slug}/callback").to_s
+  end
+
+  def callback_url
+    URI.join(auth_url, "/callback").to_s
   end
 end
