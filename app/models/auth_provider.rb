@@ -32,17 +32,16 @@ class AuthProvider < ApplicationRecord
   validates :display_name, presence: true
   validates :display_name, uniqueness: true
 
-  def self.url_fragment
+  def self.slug_fragment
     raise NotImplementedError
   end
-  delegate :url_fragment, to: :class
 
   def auth_url
     root_url = OpenProject::StaticRouting::StaticUrlHelpers.new.root_url
-    URI.join(root_url, "/auth/#{slug}/callback").to_s
+    URI.join(root_url, "auth/#{slug}/").to_s
   end
 
   def callback_url
-    URI.join(auth_url, "/callback").to_s
+    URI.join(auth_url, "callback").to_s
   end
 end
