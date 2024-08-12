@@ -38,9 +38,13 @@ class NotificationsController < ApplicationController
   end
 
   def split_view
-    respond_to_with_split_view do |format|
+    respond_to do |format|
       format.html do
-        render :index, layout: "notifications"
+        if turbo_frame_request?
+          render "work_packages/split_view", layout: false
+        else
+          render :index, layout: "notifications"
+        end
       end
     end
   end

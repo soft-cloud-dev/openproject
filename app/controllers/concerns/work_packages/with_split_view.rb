@@ -52,18 +52,5 @@ module WorkPackages
         end
       end
     end
-
-    def respond_to_with_split_view(&format_block)
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update("content-bodyRight", helpers.split_view_instance.render_in(view_context)),
-            turbo_stream.push_state(url: request.fullpath)
-          ]
-        end
-
-        yield(format) if format_block
-      end
-    end
   end
 end
