@@ -42,12 +42,12 @@ See COPYRIGHT and LICENSE files for more details.
     <% unless EnterpriseToken.allows_to?(:custom_fields_in_projects_list) %>
       <div class="form--field">
         <%=
-        angular_component_tag 'op-enterprise-banner',
-                              inputs: {
-                                textMessage: t('text_project_custom_field_html'),
-                                collapsible: true,
-                                moreInfoLink: OpenProject::Static::Links.links[:enterprise_docs][:custom_field_projects][:href],
-                              }
+          angular_component_tag 'opce-enterprise-banner',
+                                inputs: {
+                                  textMessage: t('text_project_custom_field_html'),
+                                  collapsible: true,
+                                  moreInfoLink: OpenProject::Static::Links.links[:enterprise_docs][:custom_field_projects][:href],
+                                }
         %>
       </div>
     <% end %>
@@ -65,7 +65,7 @@ See COPYRIGHT and LICENSE files for more details.
                                     inputLabel: I18n.t(:'queries.configure_view.columns.input_label'),
                                     inputPlaceholder: I18n.t(:'queries.configure_view.columns.input_placeholder'),
                                     dragAreaLabel: I18n.t(:'queries.configure_view.columns.drag_area_label')
-                                  }%>
+                                  } %>
       </div>
     </div>
 
@@ -75,14 +75,13 @@ See COPYRIGHT and LICENSE files for more details.
       </div>
       <span class="form--field-container">
         <span class="form--text-field-container">
-          <%= content_tag 'editable-query-props',
-                          '',
-                          data: {
-                            name: 'settings[project_gantt_query]',
-                            id: 'settings_project_gantt_query',
-                            query: ::Projects::GanttQueryGeneratorService.current_query,
-                            'url-params': 'true'
-                          }
+          <%= angular_component_tag 'opce-editable-query-props',
+                                    data: {
+                                      name: 'settings[project_gantt_query]',
+                                      id: 'settings_project_gantt_query',
+                                      query: ::Projects::GanttQueryGeneratorService.current_query,
+                                      'url-params': 'true'
+                                    }
           %>
         </span>
       </span>

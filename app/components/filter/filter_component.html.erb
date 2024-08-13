@@ -115,7 +115,7 @@
     </ul>
     <% unless EnterpriseToken.allows_to?(:custom_fields_in_projects_list)%>
       <%=
-        helpers.angular_component_tag 'op-enterprise-banner',
+        helpers.angular_component_tag 'opce-enterprise-banner',
                                       inputs: {
                                         collapsible: true,
                                         textMessage: t('ee.upsale.project_filters.description_html'),
