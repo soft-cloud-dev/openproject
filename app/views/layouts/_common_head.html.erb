@@ -37,6 +37,9 @@
 <%# Render CSS highlighting %>
 <%= stylesheet_link_tag "/highlighting/styles/#{highlight_css_version_tag}",
                         media: :all,
+                        data: {
+                          "turbo-track": "reload"
+                        },
                         skip_pipeline: true %>
 
 <%# Custom styles %>
