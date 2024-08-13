@@ -6,6 +6,7 @@ import OpDisableWhenCheckedController from './controllers/disable-when-checked.c
 import PrintController from './controllers/print.controller';
 import RefreshOnFormChangesController from './controllers/refresh-on-form-changes.controller';
 import AsyncDialogController from './controllers/async-dialog.controller';
+import LoadAngularController from './controllers/load-angular.controller';
 
 declare global {
   interface Window {
@@ -24,6 +25,7 @@ instance.handleError = (error, message, detail) => {
 instance.register('application', OpApplicationController);
 instance.register('menus--main', MainMenuController);
 
+instance.register('load-angular', LoadAngularController);
 instance.register('disable-when-checked', OpDisableWhenCheckedController);
 instance.register('print', PrintController);
 instance.register('refresh-on-form-changes', RefreshOnFormChangesController);
