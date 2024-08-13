@@ -328,6 +328,14 @@ class WorkPackage < ApplicationRecord
     write_attribute :remaining_hours, convert_duration_to_hours(hours)
   end
 
+  def derived_progress_hints=(hints)
+    @derived_progress_hints = hints
+  end
+
+  def derived_progress_hints
+    @derived_progress_hints ||= {}
+  end
+
   def duration_in_hours
     duration ? duration * 24 : nil
   end
