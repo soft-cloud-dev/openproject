@@ -1,0 +1,140 @@
+name: "Deep Ruby Security Analysis with CodeQL"
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+  schedule:
+    - cron: '0 0 */3 * *'  # Run every 3 days
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  analyze:
+    name: Deep Ruby Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'ruby' ]
+        ruby-version: [ '3.1', '2.7' ]  # Focus on specific Ruby versions
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true  # Cache Gem installations to speed up subsequent runs
+
+    - name: Install Dependencies and Security Tools
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        gem install brakeman bundler-audit ruby_audit fasterer reek flay flog rubocop rubocop-performance rubocop-rails rubocop-rspec
+
+    - name: Set up CodeQL for Ruby
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ruby
+        queries: security-extended,security-and-quality,security-experimental
+        packs: +codeql/ruby-queries:recommended, +codeql/ruby-queries:security-extended, +codeql/ruby-queries:audit, +codeql/ruby-queries:security-experimental
+
+    - name: Run Ruby Static Analysis Tools
+      run: |
+        rubocop --format progress --format json --out rubocop.json
+        brakeman -A --format json > brakeman.json
+        bundle audit check --update
+        ruby-audit check
+        fasterer
+        reek . > reek.txt
+        flay .
+        flog .
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:ruby"
+
+    - name: Run Additional Ruby Security Checks
+      run: |
+        # Check for hardcoded secrets
+        grep -R -E "(password|secret|key).*=.*['\"].*['\"]" . || true
+        
+        # Check for SQL injection vulnerabilities
+        grep -R -E "\.where\(.*\$.*\)" . || true
+        
+        # Check for potential XSS vulnerabilities
+        grep -R -E "\.html_safe" . || true
+        
+        # Check for unsafe deserialization
+        grep -R -E "YAML.load|Marshal.load" . || true
+
+    - name: Upload Ruby Analysis Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: ruby-analysis-results-${{ matrix.ruby-version }}
+        path: |
+          rubocop.json
+          brakeman.json
+          reek.txt
+
+    - name: Upload CodeQL Results
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ github.workspace }}/results
+
+    - name: Create Issues for Ruby Vulnerabilities
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const fs = require('fs');
+          const sarif = JSON.parse(fs.readFileSync('results/ruby.sarif', 'utf8'));
+          
+          for (const run of sarif.runs) {
+            for (const result of run.results) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `[Ruby - ${result.level.toUpperCase()}] CodeQL issue in ${result.locations[0].physicalLocation.artifactLocation.uri}`,
+                body: `${result.message.text}\n\nRule: ${result.rule.id}\nSeverity: ${result.level}\n\nPlease investigate and address this issue.`,
+                labels: ['security', result.level, 'ruby']
+              });
+            }
+          }
+
+          // Process Rubocop results
+          const rubocop = JSON.parse(fs.readFileSync('rubocop.json', 'utf8'));
+          for (const file in rubocop.files) {
+            for (const offense of rubocop.files[file].offenses) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `[Ruby - ${offense.severity.toUpperCase()}] Rubocop issue in ${file}`,
+                body: `${offense.message}\n\nCop: ${offense.cop_name}\nSeverity: ${offense.severity}\n\nPlease investigate and address this issue.`,
+                labels: ['security', offense.severity, 'ruby', 'rubocop']
+              });
+            }
+          }
+
+          // Process Brakeman results
+          const brakeman = JSON.parse(fs.readFileSync('brakeman.json', 'utf8'));
+          for (const warning of brakeman.warnings) {
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Ruby - ${warning.confidence.toUpperCase()}] Brakeman issue in ${warning.file}`,
+              body: `${warning.message}\n\nType: ${warning.warning_type}\nConfidence: ${warning.confidence}\n\nPlease investigate and address this issue.`,
+              labels: ['security', warning.confidence, 'ruby', 'brakeman']
+            });
+          }
