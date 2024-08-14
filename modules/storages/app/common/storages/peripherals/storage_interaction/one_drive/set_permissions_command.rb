@@ -99,8 +99,11 @@ module Storages
           def role_to_user_map(input_data)
             input_data.permissions
                       .each_with_object({ read: [], write: [] }) do |(user_id, permissions), map|
-              map[:read] << user_id if permissions[:read_files]
-              map[:write] << user_id if permissions[:write_files]
+              if permissions[:write_files]
+                map[:write] << user_id
+              elsif permissions[:read_files]
+                map[:read] << user_id
+              end
             end
           end
 

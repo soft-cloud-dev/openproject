@@ -190,8 +190,11 @@ RSpec.describe Storages::OneDriveManagedFolderSyncService, :webmock do
       inactive_project_storage.update(project_folder_id: original_folder.result.id)
 
       set_permissions_on(original_folder.result.id,
-                         { read: ["2ff33b8f-2843-40c1-9a17-d786bca17fba"],
-                           write: %w[33db2c84-275d-46af-afb0-c26eb786b194 248aeb72-b231-4e71-a466-67fa7df2a285] })
+                         {
+                           "2ff33b8f-2843-40c1-9a17-d786bca17fba": { read_files: true },
+                           "248aeb72-b231-4e71-a466-67fa7df2a285": { write_files: true },
+                           "33db2c84-275d-46af-afb0-c26eb786b194": { write_files: true }
+                         })
 
       expect(permissions_for(inactive_project_storage))
         .to eq({ read: ["2ff33b8f-2843-40c1-9a17-d786bca17fba"],
@@ -387,9 +390,11 @@ RSpec.describe Storages::OneDriveManagedFolderSyncService, :webmock do
                                          parent_location:)
   end
 
-  def set_permissions_on(item_id, permissions)
+  def set_permissions_on(file_id, permissions)
+    input_data = Storages::Peripherals::StorageInteraction::Inputs::SetPermissions.new(file_id:, permissions:)
     Storages::Peripherals::Registry.resolve("one_drive.commands.set_permissions")
-                                   .call(storage:, path: item_id, permissions:, auth_strategy:).on_failure { p _1.inspect }
+                                   .call(storage:, auth_strategy:, input_data:)
+                                   .on_failure { p _1.inspect }
   end
 
   def delete_created_folders
