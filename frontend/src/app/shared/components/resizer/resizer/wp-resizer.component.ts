@@ -1,4 +1,4 @@
-//-- copyright
+// -- copyright
 // OpenProject is an open source project management software.
 // Copyright (C) the OpenProject GmbH
 //
@@ -86,7 +86,6 @@ export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, A
     // Get element
     // We use this more complicated approach of taking the last element of the class as it allows
     // to still work in case an element is duplicated by Angular.
-    debugger;
     const contentBodyRight = document.querySelector('#content-bodyRight') as HTMLElement;
     if (contentBodyRight && contentBodyRight.children.length>0) {
       this.resizingElement = contentBodyRight;
