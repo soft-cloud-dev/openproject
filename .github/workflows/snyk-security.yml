@@ -1,0 +1,75 @@
+name: Snyk Security
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+  schedule:
+    - cron: '0 0 */7 * *'  # Run every 7 days
+    
+permissions:
+  contents: read
+
+jobs:
+  snyk:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Snyk CLI to check for security issues
+        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Snyk Code test
+        run: snyk code test --sarif > snyk-code.sarif || true
+
+      - name: Snyk Open Source monitor
+        run: snyk monitor --all-projects
+
+      - name: Snyk IaC test and report
+        run: snyk iac test --report || true
+
+      - name: Build a Docker image
+        run: docker build -t your/image-to-test .
+
+      - name: Snyk Container monitor
+        run: snyk container monitor your/image-to-test --file=Dockerfile
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk-code.sarif
+
+      - name: Install Trivy
+        run: |
+          sudo apt-get install wget -y
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.30.4/trivy_0.30.4_Linux-64bit.deb
+          sudo dpkg -i trivy_0.30.4_Linux-64bit.deb
+
+      # - name: Run Trivy Vulnerability Scan on Docker Image
+      #   run: trivy image --security-checks vuln,config --format json --output trivy-results.json your/image-to-test
+
+      - name: Upload Trivy Results to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.json
+
+      - name: Install OWASP ZAP
+        run: |
+          sudo apt-get install -y owasp-zap
+
+      - name: Run OWASP ZAP Baseline Scan
+        run: zap-baseline.py -t http://localhost:8080 -r zap_report.html || true
+
+      - name: Upload OWASP ZAP Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report
+          path: zap_report.html
