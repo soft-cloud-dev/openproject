@@ -272,8 +272,8 @@ group :test do
   gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", branch: "main"
   gem "capybara-screenshot", "~> 1.0.17"
   gem "cuprite", "~> 0.15.0"
-  gem "selenium-devtools"
-  gem "selenium-webdriver", "~> 4.20"
+  gem "selenium-devtools", ">= 0.128.0"
+  gem "selenium-webdriver", "~> 4.24", ">= 4.24.0"
 
   gem "fuubar", "~> 2.5.0", require: false
   gem "timecop", "~> 0.9.0"
