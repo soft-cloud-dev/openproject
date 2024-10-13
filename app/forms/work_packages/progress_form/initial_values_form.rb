@@ -40,21 +40,22 @@ class WorkPackages::ProgressForm
 
     form do |form|
       if mode == :status_based
-        form.hidden(name: :status_id,
-                    value: work_package.status_id_was)
-        form.hidden(name: :estimated_hours,
-                    value: work_package.estimated_hours_was)
+        hidden_initial_field(form, name: :status_id)
+        hidden_initial_field(form, name: :estimated_hours)
       else
-        form.hidden(name: :estimated_hours,
-                    value: work_package.estimated_hours_was)
-        form.hidden(name: :remaining_hours,
-                    value: work_package.remaining_hours_was)
-        # next line to be removed in 15.0 with :percent_complete_edition feature flag removal
-        next unless OpenProject::FeatureDecisions.percent_complete_edition_active?
-
-        form.hidden(name: :done_ratio,
-                    value: work_package.done_ratio_was)
+        hidden_initial_field(form, name: :estimated_hours)
+        hidden_initial_field(form, name: :remaining_hours)
+        hidden_initial_field(form, name: :done_ratio)
       end
+    end
+
+    private
+
+    def hidden_initial_field(form, name:)
+      form.hidden(name:,
+                  value: work_package.public_send(:"#{name}_was"),
+                  data: { "work-packages--progress--preview-target": "initialValueInput",
+                          "referrer-field": name })
     end
   end
 end

@@ -31,6 +31,9 @@ vi:
     custom_styles:
       color_theme: "Màu sắc giao diện"
       color_theme_custom: "(Tùy chỉnh)"
+      tab_interface: "Interface"
+      tab_branding: "Branding"
+      tab_pdf_export_styles: "PDF export styles"
       colors:
         primary-button-color: "Nút chính"
         accent-color: "Nhấn mạnh"
@@ -79,6 +82,7 @@ vi:
         contact: "Liên hệ với chúng tôi để có buổi demo"
       enterprise_info_html: "là một tiện ích bổ sung Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span>."
       upgrade_info: "Vui lòng nâng cấp lên gói trả phí để kích hoạt và bắt đầu sử dụng nó trong nhóm của bạn."
+    jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
       explanation:
         text: "Các hành động cá nhân của người dùng (ví dụ: cập nhật một công việc hai lần) được gộp thành một hành động nếu thời gian chênh lệch giữa chúng nhỏ hơn khoảng thời gian được chỉ định. Chúng sẽ được hiển thị dưới dạng một hành động duy nhất trong ứng dụng. Điều này cũng sẽ trì hoãn thông báo cùng một khoảng thời gian giảm số lượng email được gửi và cũng sẽ ảnh hưởng đến độ trễ %{webhook_link}."
@@ -204,6 +208,17 @@ vi:
       title: "Hành động tùy chỉnh"
       description: "Hành động tùy chỉnh là các phím tắt một lần để thực hiện một tập hợp các hành động đã được định trước mà bạn có thể làm cho sẵn có trên các gói công việc nhất định dựa trên trạng thái, vai trò, loại hoặc dự án."
   custom_fields:
+    admin:
+      custom_field_projects:
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This custom field is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+      items:
+        blankslate:
+          title: "Your list of items is empty"
+          description: "Start by adding items to the custom field of type hierarchy. Each item can be used to create a hierarchy bellow it. To navigate and create sub-items inside a hierarchy click on the created item."
+      notice:
+        remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
     text_add_new_custom_field: >
       Để thêm các trường tùy chỉnh mới vào một dự án, trước tiên bạn cần tạo chúng trước khi có thể thêm vào dự án này.
     is_enabled_globally: "Được bật toàn cầu"
@@ -266,6 +281,9 @@ vi:
       open_as_gantt: "Mở dưới dạng chế độ xem Gantt"
       no_results_title_text: Không có dự án nào
       no_results_content_text: Tạo một dự án mới
+      search:
+        label: Bộ lọc tên dự án
+        placeholder: Tìm kiếm theo tên dự án
     lists:
       active: "Các dự án đang hoạt động"
       my: "Dự án của tôi"
@@ -299,7 +317,7 @@ vi:
         actions:
           label_enable_single: "Kích hoạt trong dự án này, nhấp để tắt"
           label_disable_single: "Không kích hoạt trong dự án này, nhấp để bật"
-          deactivate_for_project: "Vô hiệu hóa cho dự án này"
+          remove_from_project: "Xóa khỏi dự án"
           label_enable_all: "Bật tất cả"
           label_disable_all: "Tắt tất cả"
         is_required_blank_slate:
@@ -457,17 +475,21 @@ vi:
       no_results_content_text: Thêm một báo cáo trạng thái
   statuses:
     edit:
+      status_color_text: |
+        Nhấp để gán hoặc thay đổi màu của trạng thái này.
+        Nó được hiển thị trên nút trạng thái và có thể được sử dụng để làm nổi bật các gói công việc trong bảng.
+      status_excluded_from_totals_text: |-
+        Đánh dấu tùy chọn này để loại trừ các gói công việc có trạng thái này khỏi tổng số Công việc,
+        Công việc còn lại, và % Hoàn thành trong một cấu trúc phân cấp.
+      status_percent_complete_text: |-
+        In <a href="%{href}">status-based progress calculation mode</a>, the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         Đánh dấu tùy chọn này để đánh dấu các gói công việc với trạng thái này là chỉ đọc.
         Không thể thay đổi các thuộc tính ngoại trừ trạng thái.
         <br/>
         <strong>Lưu ý</strong>: Các giá trị kế thừa (ví dụ: từ các mục con hoặc mối quan hệ) vẫn sẽ được áp dụng.
-      status_excluded_from_totals_text: |-
-        Đánh dấu tùy chọn này để loại trừ các gói công việc có trạng thái này khỏi tổng số Công việc,
-        Công việc còn lại, và % Hoàn thành trong một cấu trúc phân cấp.
-      status_color_text: |
-        Nhấp để gán hoặc thay đổi màu của trạng thái này.
-        Nó được hiển thị trên nút trạng thái và có thể được sử dụng để làm nổi bật các gói công việc trong bảng.
     index:
       no_results_title_text: Hiện tại không có trạng thái gói công việc nào.
       no_results_content_text: Thêm trạng thái mới
@@ -519,7 +541,7 @@ vi:
       could_not_be_saved: "Không thể lưu các gói công việc sau:"
       none_could_be_saved: "Không có gói công việc nào trong số %{total} có thể được cập nhật."
       x_out_of_y_could_be_saved: "%{failing} trong số %{total} gói công việc không thể được cập nhật trong khi %{success} thì có thể."
-      selected_because_descendants: "Khi %{selected} gói công việc được chọn, tổng cộng %{total} gói công việc bị ảnh hưởng bao gồm các mục kế thừa."
+      selected_because_descendants: "While %{selected} work packages were selected, in total %{total} work packages are affected which includes descendants."
       descendant: "gói công việc kế thừa của được chọn"
     move:
       no_common_statuses_exists: "Có là tình trạng không có sẵn cho tất cả các gói đã chọn công việc. Tình trạng của họ không thể thay đổi."
@@ -609,6 +631,7 @@ vi:
         editable: "Có thể chỉnh sửa"
         field_format: "Định dạng"
         is_filter: "Dùng như bộ lọc"
+        is_for_all: "For all projects"
         is_required: "Bắt buộc"
         max_length: "Chiều dài tối đa"
         min_length: "Chiều dài tối thiểu"
@@ -623,6 +646,8 @@ vi:
         uid: "ID Khách hàng"
         secret: "Bí mật khách hàng"
         owner: "Người sở hữu"
+        builtin: "Builtin"
+        enabled: "Active"
         redirect_uri: "URI đổi hướng"
         client_credentials_user_id: "ID người dùng thông tin xác thực của khách hàng"
         scopes: "Phạm vi"
@@ -794,6 +819,7 @@ vi:
         blank: "không được để trống"
         blank_nested: "cần có thuộc tính '%{property}' được thiết lập."
         cannot_delete_mapping: "là bắt buộc. Không thể xóa."
+        is_for_all_cannot_modify: "is for all projects and can therefore not be modified."
         cant_link_a_work_package_with_a_descendant: "Một gói công việc không thể liên kết với một trong các nhiệm vụ con của nó."
         circular_dependency: "Mối quan hệ này sẽ tạo ra một sự phụ thuộc tuần hoàn."
         confirmation: "không khớp %{attribute}."
@@ -867,6 +893,10 @@ vi:
               minimum: "cần bao gồm ít nhất một bộ lọc cho principal, context hoặc id với toán tử '='."
         custom_field:
           at_least_one_custom_option: "Ít nhất một lựa chọn cần phải được cung cấp."
+        custom_fields_project:
+          attributes:
+            project_ids:
+              blank: "Please select a project."
         custom_actions:
           only_one_allowed: "(%{name}) chỉ có một giá trị được cho phép."
           empty: "giá trị (%{name}) không thể để trống."
@@ -897,6 +927,8 @@ vi:
             name:
               blank: "là bắt buộc. Vui lòng chọn một tên."
               not_unique: "đã được sử dụng. Vui lòng chọn một tên khác."
+        meeting:
+          error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
         notifications:
           at_least_one_channel: "Cần chỉ định ít nhất một kênh để gửi thông báo."
           attributes:
@@ -1032,10 +1064,10 @@ vi:
             assigned_to:
               format: "%{message}"
             done_ratio:
-              does_not_match_work_and_remaining_work: "không khớp với công việc và công việc còn lại"
-              cannot_be_set_when_work_is_zero: "không thể thiết lập khi công việc bằng không"
-              must_be_set_when_remaining_work_is_set: "Bắt buộc khi thiết lập Công việc còn lại."
-              must_be_set_when_work_and_remaining_work_are_set: "Bắt buộc khi thiết lập Công việc và Công việc còn lại."
+              does_not_match_work_and_remaining_work: "không khớp với Công việc và Công việc còn lại"
+              cannot_be_set_when_work_is_zero: "không thể thiết lập khi Công việc là 0h"
+              must_be_set_when_remaining_work_is_set: "cần thiết khi công việc còn lại được thiết lập."
+              must_be_set_when_work_and_remaining_work_are_set: "cần thiết khi Công việc và Công việc còn lại được thiết lập."
               inclusion: "phải nằm trong khoảng từ 0 đến 100."
             due_date:
               not_start_date: "không phải ngày bắt đầu, mặc dù điều này là cần thiết cho các mốc quan trọng."
@@ -1065,15 +1097,17 @@ vi:
               does_not_exist: "Thể loại đã chỉ định không tồn tại."
             estimated_hours:
               not_a_number: "không phải là thời gian hợp lệ."
-              cant_be_inferior_to_remaining_work: "Không thể thấp hơn Công việc còn lại."
-              must_be_set_when_remaining_work_and_percent_complete_are_set: "Bắt buộc khi thiết lập Lượng công việc còn lại và % Hoàn thành."
-              format: "%{message}"
+              cant_be_inferior_to_remaining_work: "không thể thấp hơn Công việc còn lại."
+              must_be_set_when_remaining_work_and_percent_complete_are_set: "bắt buộc khi thiết lập Công việc còn lại và % Hoàn thành."
             remaining_hours:
               not_a_number: "không phải là thời gian hợp lệ."
-              cant_exceed_work: "Không thể cao hơn Công việc."
-              must_be_set_when_work_is_set: "Yêu cầu khi Công việc được đặt."
-              must_be_set_when_work_and_percent_complete_are_set: "Bắt buộc khi Công việc và % Hoàn thành được thiết lập."
-              format: "%{message}"
+              cant_exceed_work: "không thể cao hơn Công việc."
+              must_be_set_when_work_is_set: "cần thiết khi Công việc được thiết lập."
+              must_be_set_when_work_and_percent_complete_are_set: "bắt buộc khi Công việc và % Hoàn thành được thiết lập."
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                phải là 0h khi Công việc được thiết lập và % Hoàn thành là 100%.
+              must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
+                phải trống khi Công việc trống và % Hoàn thành là 100%.
           readonly_status: "Gói công việc đang ở trạng thái chỉ đọc nên các thuộc tính của nó không thể bị thay đổi."
         type:
           attributes:
@@ -1092,7 +1126,7 @@ vi:
               confirmation: "Xác nhận mật khẩu không khớp với mật khẩu."
               format: "%{message}"
             password:
-              weak: "Phải chứa các ký tự thuộc các lớp sau (ít nhất %{min_count} trong số %{all_count}): %{rules}."
+              weak: "Phải chứa các ký tự của các lớp sau (ít nhất %{min_count} trong số %{all_count}): %{rules}"
               lowercase: "chữ thường (ví dụ như 'a')"
               uppercase: "chữ hoa (ví dụ như ' A')"
               numeric: "số (ví dụ như ' 1')"
@@ -1324,6 +1358,7 @@ vi:
   button_expand_all: "Mở rộng tất cả"
   button_favorite: "Thêm vào yêu thích"
   button_filter: "Lọc"
+  button_finish_setup: "Finish setup"
   button_generate: "Tạo"
   button_list: "Danh sách"
   button_lock: "Khóa"
@@ -1376,8 +1411,8 @@ vi:
     failure_message: Sự đồng ý không thành công, không thể tiếp tục.
     title: Sự đồng ý của người dùng
     decline_warning_message: Bạn đã từ chối đồng ý và đã đăng xuất.
-    user_has_consented: Người dùng đã đồng ý với tuyên bố được định cấu hình của bạn tại thời điểm nhất định.
-    not_yet_consented: Người dùng chưa đồng ý, sẽ được yêu cầu đồng ý khi đăng nhập lần tiếp theo.
+    user_has_consented: The user gave their consent to your [configured consent information text](consent_settings).
+    not_yet_consented: The user has not yet given their consent to your [configured consent information text](consent_settings). They will be reminded the next time they log in.
     contact_mail_instructions: Xác định địa chỉ email mà người dùng có thể liên hệ với người quản lý dữ liệu để thực hiện yêu cầu thay đổi hoặc xóa dữ liệu.
     contact_your_administrator: Vui lòng liên hệ với quản trị viên của bạn nếu bạn muốn xóa tài khoản của mình.
     contact_this_mail_address: Vui lòng liên hệ với %{mail_address} nếu bạn muốn xóa tài khoản của mình.
@@ -1592,7 +1627,7 @@ vi:
   error_menu_item_not_saved: Không thể lưu mục trình đơn
   error_wiki_root_menu_item_conflict: >
     Không thể đổi tên "%{old_name}" thành "%{new_name}" do có xung đột giữa mục menu kết quả với mục menu hiện tại "%{existing_caption}" (%{existing_identifier}).
-  error_external_authentication_failed: "Đã xảy ra lỗi trong quá trình xác thực bên ngoài. Vui lòng thử lại."
+  error_external_authentication_failed_message: "An error occurred during external authentication: %{message}"
   error_attribute_not_highlightable: "Thuộc tính(s) không thể tô sáng: %{attributes}"
   events:
     changeset: "Đã chỉnh sửa Changeset (bộ thay đổi)"
@@ -1611,9 +1646,71 @@ vi:
       project: "Dự án: %{name}"
       subproject: "Dự án con: %{name}"
   export:
-    your_work_packages_export: "Xuất gói công việc của bạn"
-    succeeded: "Xuất khẩu đã hoàn tất thành công."
-    failed: "Xuất khẩu đã thất bại: %{message}"
+    dialog:
+      title: "Xuất"
+      submit: "Xuất"
+      format:
+        label: "Định dạng tệp tin"
+        options:
+          csv:
+            label: "CSV"
+          pdf:
+            label: "PDF"
+          xls:
+            label: "XLS"
+      columns:
+        input_label_report: "Thêm cột vào bảng thuộc tính"
+        input_caption_report: "Theo mặc định, tất cả các thuộc tính được thêm vào dưới dạng cột trong danh sách gói công việc đều được chọn. Các trường văn bản dài không có trong bảng thuộc tính, nhưng có thể được hiển thị bên dưới."
+        input_caption_table: "Theo mặc định, tất cả các thuộc tính được thêm vào dưới dạng cột trong danh sách gói công việc đều được chọn. Các trường văn bản dài không khả dụng trong xuất dựa trên bảng."
+      pdf:
+        export_type:
+          label: "Loại xuất PDF"
+          options:
+            table:
+              label: "Bảng"
+              caption: "Xuất danh sách các gói công việc thành một bảng có các cột mong muốn."
+            report:
+              label: "Báo cáo"
+              caption: "Xuất gói công việc thành báo cáo chi tiết về tất cả các gói công việc trong danh sách."
+            gantt:
+              label: "Biểu đồ Gantt"
+              caption: "Xuất danh sách các gói công việc theo dạng biểu đồ Gantt."
+        include_images:
+          label: "Bao gồm hình ảnh"
+          caption: "Loại trừ hình ảnh để giảm kích thước của tệp PDF xuất ra."
+        gantt_zoom_levels:
+          label: "Mức độ thu phóng"
+          caption: "Chọn mức độ thu phóng cho các ngày hiển thị trên biểu đồ."
+          options:
+            days: "Ngày"
+            weeks: "Tuần"
+            months: "Tháng"
+            quarters: "Quý"
+        column_width:
+          label: "Chiều rộng cột bảng"
+          options:
+            narrow: "Hẹp"
+            medium: "Vừa"
+            wide: "Rộng"
+            very_wide: "Rất rộng"
+        paper_size:
+          label: "Khổ giấy"
+          caption: "Tùy thuộc vào kích thước biểu đồ, có thể xuất nhiều hơn một trang."
+        long_text_fields:
+          input_caption: "Theo mặc định, tất cả các trường văn bản dài đều được chọn."
+          input_label: "Thêm các trường văn bản dài"
+          input_placeholder: "Tìm kiếm các trường văn bản dài"
+          drag_area_label: "Quản lý các trường văn bản dài"
+      xls:
+        include_relations:
+          label: "Bao gồm các mối quan hệ"
+          caption: "Tùy chọn này sẽ tạo bản sao của mỗi gói công việc cho mọi mối quan hệ mà nó có với một gói công việc khác."
+        include_descriptions:
+          label: "Bao gồm mô tả"
+          caption: "Tùy chọn này sẽ thêm cột mô tả ở định dạng thô."
+    your_work_packages_export: "Các gói công việc đang được xuất khẩu"
+    succeeded: "Xuất hoàn tất"
+    failed: "Đã xảy ra lỗi khi cố gắng xuất các gói công việc: %{message}"
     format:
       atom: "Atom"
       csv: "CSV"
@@ -1685,6 +1782,8 @@ vi:
       progress_mode_changed_to_status_based: "Cập nhật tính toán tiến độ"
       status_changed: "Trạng thái '%{status_name}'"
       system_update: "Cập nhật hệ thống OpenProject:"
+      total_percent_complete_mode_changed_to_work_weighted_average: "Calculation of % Complete totals now weighted by Work."
+      total_percent_complete_mode_changed_to_simple_average: "Calculation of % Complete totals now based on a simple average of only % Complete values."
     cause_descriptions:
       work_package_predecessor_changed_times: bởi các thay đổi đối với người tiền nhiệm %{link}
       work_package_parent_changed_times: bởi các thay đổi đối với cha %{link}
@@ -1702,7 +1801,7 @@ vi:
       progress_mode_changed_to_status_based: Chế độ tính toán tiến độ đã được đặt thành chế độ dựa trên trạng thái
       status_excluded_from_totals_set_to_false_message: hiện được bao gồm trong tổng số phân cấp
       status_excluded_from_totals_set_to_true_message: hiện bị loại trừ khỏi tổng số phân cấp
-      status_percent_complete_changed: "Phần trăm hoàn thành đã thay đổi từ %{old_value}% thành %{new_value}%"
+      status_percent_complete_changed: "% Complete changed from %{old_value}% to %{new_value}%"
       system_update:
         file_links_journal: >
           Từ giờ trở đi, hoạt động liên quan đến liên kết tệp (các tệp lưu trữ bên ngoài) sẽ xuất hiện ở đây trong tab Hoạt động. Các hoạt động sau đây liên quan đến các liên kết đã tồn tại:
@@ -1712,6 +1811,10 @@ vi:
           Tính toán tiến độ tự động <a href="%{href}" target="_blank">được điều chỉnh với cập nhật phiên bản</a>.
         totals_removed_from_childless_work_packages: >-
           Tổng số công việc và tiến độ tự động bị xóa cho các gói công việc không có cha với <a href="%{href}" target="_blank">cập nhật phiên bản</a>. Đây là một nhiệm vụ bảo trì và có thể được bỏ qua một cách an toàn.
+      total_percent_complete_mode_changed_to_work_weighted_average: >-
+        Child work packages without Work are ignored.
+      total_percent_complete_mode_changed_to_simple_average: >-
+        Work values of child work packages are ignored.
   links:
     configuration_guide: "Hướng dẫn cấu hình"
     get_in_touch: "Nếu bạn còn những câu hỏi khác ? Hãy liên lạc với chúng tôi"
@@ -1811,7 +1914,8 @@ vi:
   label_additional_workflow_transitions_for_assignee: "Chuyển đổi bổ sung được cho phép khi người sử dụng là người được gán"
   label_additional_workflow_transitions_for_author: "Các chuyển đổi bổ xung được phép khi người dùng là tác giả"
   label_administration: "Quản trị"
-  label_advanced_settings: "Cài đặt nâng cao"
+  label_interface_colors: "Interface colors"
+  label_interface_colors_description: "These colors control how the application looks. If you modify them the theme will automatically be changed to Custom theme, but we can’t assure the compliance of the accessibility contrast minimums (WCAG 2.1). "
   label_age: "Tuổi"
   label_ago: "vài ngày trước"
   label_all: "tất cả"
@@ -1844,6 +1948,7 @@ vi:
   label_attribute_expand_text: "Văn bản đầy đủ cho '%{attribute}'"
   label_authentication: "Xác thực"
   label_authentication_settings: "Cài đặt xác thực"
+  label_available_custom_fields_projects: "Available custom fields projects"
   label_available_global_roles: "Các vai trò toàn cầu có sẵn"
   label_available_project_attributes: "Các thuộc tính dự án có sẵn"
   label_available_project_forums: "Các diễn đàn dự án có sẵn"
@@ -1873,6 +1978,7 @@ vi:
   label_calendars_and_dates: "Lịch và ngày"
   label_calendar_show: "Hiển thị Lịch"
   label_category: "Danh mục"
+  label_completed: Completed
   label_consent_settings: "Tùy chọn đồng ý"
   label_wiki_menu_item: Khoản mục menu wiki
   label_select_main_menu_item: Chọn mục trình đơn chính mới
@@ -1916,6 +2022,7 @@ vi:
   label_copy_project: "Sao chép dự án"
   label_core_version: "Phiên bản lõi"
   label_core_build: "Xây dựng lõi"
+  label_created_by: "Created by %{user}"
   label_current_status: "Tình trạng hiện tại"
   label_current_version: "Phiên bản hiện tại"
   label_custom_field_add_no_type: "Thêm trường này vào một loại work package"
@@ -1923,6 +2030,7 @@ vi:
   label_custom_field_plural: "Các trường tùy chỉnh"
   label_custom_field_default_type: "Kiểu rỗng"
   label_custom_style: "Thiết kế"
+  label_custom_style_description: "Choose how OpenProject looks to you with themes, select your default colors to use in the app and how exports look like."
   label_dashboard: "Bảng điều khiển"
   label_database_version: "Phiên bản PostgreSQL"
   label_date: "Ngày"
@@ -2019,6 +2127,7 @@ vi:
   label_here: đây
   label_hide: "Ẩn"
   label_history: "Lịch sử"
+  label_hierarchy: "Hierarchy"
   label_hierarchy_leaf: "Hệ thống phân cấp lá"
   label_home: "Trang chủ"
   label_subject_or_id: "Chủ đề hoặc Mã"
@@ -2030,6 +2139,7 @@ vi:
   label_inactive: "Không hoạt động"
   label_incoming_emails: "Các thư đến"
   label_includes: "bao gồm"
+  label_incomplete: Incomplete
   label_include_sub_projects: Bao gồm dự án con
   label_index_by_date: "Chỉ mục theo ngày"
   label_index_by_title: "Chỉ mục theo tiêu đề"
@@ -2040,12 +2150,14 @@ vi:
   label_internal: "Nội bộ"
   label_introduction_video: "Giới thiệu video"
   label_invite_user: "Mời người dùng"
+  label_item: "Item"
+  label_item_plural: "Items"
   label_share: "Chia sẻ"
   label_share_project_list: "Chia sẻ danh sách dự án"
   label_share_work_package: "Chia sẻ gói công việc"
-  label_show_hide: "Hiển thị/ẩn"
-  label_show_hide_n_items: "Hiển thị/ẩn %{count} mục"
   label_show_all_registered_users: "Hiển thị tất cả người dùng đã đăng ký"
+  label_show_less: "Show less"
+  label_show_more: "Show more"
   label_journal: "Nhật ký"
   label_journal_diff: "So sánh mô tả"
   label_language: "Ngôn ngữ"
@@ -2116,7 +2228,7 @@ vi:
   label_more: "Xem thêm"
   label_more_than_ago: "nhiều hơn mấy ngày trước"
   label_move_work_package: "Di chuyển work package"
-  label_my_account: "Tài khoản của tôi"
+  label_my_account: "Account settings"
   label_my_activity: "Hoạt động của tôi"
   label_my_account_data: "Dữ liệu tài khoản của tôi"
   label_my_avatar: "Ảnh đại diện của tôi"
@@ -2143,6 +2255,7 @@ vi:
   label_no_parent_page: "Không có trang quan hệ"
   label_nothing_display: "Không có gì để hiển thị"
   label_nobody: "không ai"
+  label_not_configured: "Not configured"
   label_not_found: "không tìm thấy"
   label_none: "không"
   label_none_parentheses: "(trống)"
@@ -2195,6 +2308,7 @@ vi:
   label_product_version: "Phiên bản sản phẩm"
   label_profile: "Hồ sơ"
   label_percent_complete: "% Hoàn thành"
+  label_progress_tracking: "Progress tracking"
   label_project: "Dự án"
   label_project_activity: "Hoạt động dự án"
   label_project_attribute_plural: "Các thuộc tính dự án"
@@ -2264,6 +2378,8 @@ vi:
   label_role_plural: "Vai trò"
   label_role_search: "Chỉ định vai trò cho các thành viên mới"
   label_scm: "SCM"
+  label_scroll_left: "Scroll left"
+  label_scroll_right: "Scroll right"
   label_search: "Tìm kiếm"
   label_search_by_name: "Tìm kiếm theo tên"
   label_send_information: "Gửi thông tin đăng nhập mới cho người dùng"
@@ -2378,7 +2494,6 @@ vi:
   label_work_package_new: "Work package mới"
   label_work_package_edit: "Chỉnh sửa work package %{name}"
   label_work_package_plural: "Work Packages"
-  label_work_packages_settings: "Cài đặt gói công việc"
   label_work_package_status: "Trạng thái gói công việc"
   label_work_package_status_new: "Trạng thái mới"
   label_work_package_status_plural: "Tình trạng work package"
@@ -2765,6 +2880,7 @@ vi:
   permission_view_shared_work_packages: "Xem chia sẻ gói công việc"
   permission_view_time_entries: "Xem thời gian đã chi tiêu"
   permission_view_timelines: "Xem mốc thời gian"
+  permission_view_user_email: "View users' mail addresses"
   permission_view_wiki_edits: "Xem lịch sử chỉnh sửa wiki"
   permission_view_wiki_pages: "Xem wiki"
   permission_work_package_assigned: "Trở thành người được chỉ định/chịu trách nhiệm"
@@ -3015,11 +3131,15 @@ vi:
   setting_hours_per_day_explanation: >-
     Điều này xác định cái gì được coi là một "ngày" khi hiển thị thời gian theo ngày và giờ (ví dụ, nếu một ngày là 8 giờ, 32 giờ sẽ là 4 ngày).
   setting_invitation_expiration_days: "Email kích hoạt hết hạn sau"
-  setting_work_package_done_ratio: "Tính toán tiến độ"
+  setting_work_package_done_ratio: "Progress calculation mode"
   setting_work_package_done_ratio_field: "Dựa trên công việc"
+  setting_work_package_done_ratio_field_caption_html: >-
+    <i>% Complete</i> can be freely set to any value. If you optionally enter a value for <i>Work</i>, <i>Remaining work</i> will automatically be derived.
   setting_work_package_done_ratio_status: "Dựa trên trạng thái"
+  setting_work_package_done_ratio_status_caption_html: >-
+    Each status has a <i>% Complete</i> value associated with it. Changing status will change <i>% Complete</i>.
   setting_work_package_done_ratio_explanation_html: >
-    Trong chế độ <b>dựa trên công việc</b>, % Hoàn thành được tính từ mức độ công việc đã thực hiện so với tổng công việc. Trong chế độ <b>dựa trên trạng thái</b>, mỗi trạng thái có một giá trị % Hoàn thành liên kết. Thay đổi trạng thái sẽ thay đổi % Hoàn thành.
+    Ở chế độ <b>dựa trên công việc</b>, % Hoàn thành có thể được tự do thiết lập thành bất kỳ giá trị nào. Nếu bạn tùy ý nhập giá trị cho Công việc, Công việc còn lại sẽ tự động được suy ra. Ở chế độ <b>dựa trên trạng thái</b>, mỗi trạng thái có giá trị % Hoàn thành được liên kết với nó. Thay đổi trạng thái sẽ thay đổi % Hoàn thành.
   setting_work_package_properties: "Thuộc tính gói công việc"
   setting_work_package_startdate_is_adddate: "Sử dụng ngày hiện tại làm ngày bắt đầu cho các gói công việc mới"
   setting_work_packages_projects_export_limit: "Giới hạn xuất gói công việc / Dự án"
@@ -3038,6 +3158,13 @@ vi:
   setting_password_min_length: "Độ dài tối thiểu"
   setting_password_min_adhered_rules: "Số lượng lớp yêu cầu tối thiểu"
   setting_per_page_options: "Tùy chọn số đối tượng trên mỗi trang"
+  setting_percent_complete_on_status_closed: "% Complete when status is closed"
+  setting_percent_complete_on_status_closed_no_change: "No change"
+  setting_percent_complete_on_status_closed_no_change_caption_html: >-
+    The value of <i>% Complete</i> will not change even when a work package is closed.
+  setting_percent_complete_on_status_closed_set_100p: "Automatically set to 100%"
+  setting_percent_complete_on_status_closed_set_100p_caption: >-
+    A closed work package is considered complete.
   setting_plain_text_mail: "Email văn bản thuần túy (không có HTML)"
   setting_protocol: "Giao thức"
   setting_project_gantt_query: "Xem Gantt của danh mục dự án"
@@ -3062,6 +3189,13 @@ vi:
   setting_sys_api_enabled: "Kích hoạt dịch vụ quản lý kho"
   setting_sys_api_description: "Dịch vụ quản lý kho cung cấp tích hợp và xác thực người dùng cho việc truy cập kho."
   setting_time_format: "Thời gian"
+  setting_total_percent_complete_mode: "Calculation of % Complete hierarchy totals"
+  setting_total_percent_complete_mode_work_weighted_average: "Weighted by work"
+  setting_total_percent_complete_mode_work_weighted_average_caption_html: >-
+    The <i>total % Complete</i> will be weighted against the <i>Work</i> of each work package in the hierarchy. Work packages without <i>Work</i> will be ignored.
+  setting_total_percent_complete_mode_simple_average: "Simple average"
+  setting_total_percent_complete_mode_simple_average_caption_html: >-
+    <i>Work</i> is ignored and the <i>total % Complete</i> will be a simple average of <i>% Complete</i> values of work packages in the hierarchy.
   setting_accessibility_mode_for_anonymous: "Kích hoạt chế độ truy cập cho người dùng ẩn danh"
   setting_user_format: "Định dạng tên người dùng"
   setting_user_default_timezone: "Time zone mặc định"
@@ -3400,9 +3534,25 @@ vi:
     progress:
       label_note: "Ghi chú:"
       modal:
-        work_based_help_text: "% Hoàn thành được tự động lấy từ Công việc và Công việc còn lại."
+        work_based_help_text: "Mỗi trường sẽ được tự động tính toán dựa trên hai trường còn lại khi có thể."
         status_based_help_text: "% Hoàn thành được thiết lập theo trạng thái của gói công việc."
         migration_warning_text: "Trong chế độ tính toán tiến độ dựa trên công việc, % Hoàn thành không thể được đặt thủ công và liên kết với Công việc. Giá trị hiện tại đã được giữ nhưng không thể chỉnh sửa. Vui lòng nhập Công việc trước."
+      derivation_hints:
+        done_ratio:
+          cleared_because_remaining_work_is_empty: "Đã xóa vì công việc còn lại đang trống."
+          cleared_because_work_is_0h: "Đã xóa vì Công việc là 0h."
+          derived: "Được suy ra từ Công và Công còn lại."
+        estimated_hours:
+          cleared_because_remaining_work_is_empty: "Đã xóa vì công việc còn lại đang trống."
+          derived: "Được lấy từ Công việc còn lại và % Hoàn thành."
+          same_as_remaining_work: "Đặt thành giá trị giống với Công việc còn lại."
+        remaining_hours:
+          cleared_because_work_is_empty: "Đã xóa vì Công việc đang trống."
+          cleared_because_percent_complete_is_empty: "Đã xóa vì % Hoàn thành đang trống."
+          decreased_by_delta_like_work: "Giảm %{delta}, phù hợp với mức giảm trong Công việc."
+          derived: "Được lấy từ Công việc và % Hoàn thành."
+          increased_by_delta_like_work: "Tăng thêm %{delta}, tương ứng với mức tăng của Công việc."
+          same_as_work: "Đặt thành giá trị giống như Work."
     permissions:
       comment: "Nhận xét"
       comment_description: "Có thể xem và nhận xét gói công việc này."
@@ -3593,12 +3743,16 @@ vi:
     close_warning: "Bỏ qua cảnh báo này."
   oauth:
     application:
+      builtin: Built-in instance application
+      confidential: Confidential
       singular: "Ứng dụng OAuth"
       plural: "Các ứng dụng OAuth"
       named: "Ứng dụng OAuth '%{name}'"
       new: "Ứng dụng OAuth mới"
+      non_confidential: Non confidential
       default_scopes: "(Phạm vi mặc định)"
       instructions:
+        enabled: "Enable this application, allowing users to perform authorization grants with it."
         name: "Tên ứng dụng của bạn. Điều này sẽ được hiển thị cho người dùng khác khi ủy quyền."
         redirect_uri_html: >
           Các URL người dùng được ủy quyền có thể được chuyển hướng đến. Mỗi mục nhập trên một dòng. <br/> Nếu bạn đang đăng ký một ứng dụng máy tính để bàn, hãy sử dụng URL sau.
@@ -3607,6 +3761,10 @@ vi:
         client_credential_user_id: "ID người dùng tùy chọn để mạo danh khi khách hàng sử dụng ứng dụng này. Để trống để chỉ cho phép truy cập công cộng"
         register_intro: "Nếu bạn đang phát triển ứng dụng khách API OAuth cho OpenProject, bạn có thể đăng ký nó bằng cách sử dụng biểu mẫu này để tất cả người dùng sử dụng."
         default_scopes: ""
+    header:
+      builtin_applications: Built-in OAuth applications
+      other_applications: Other OAuth applications
+    empty_application_lists: No OAuth applications have been registered.
     client_id: "ID khách hàng"
     client_secret_notice: >
       Đây là lần duy nhất chúng tôi có thể in bí mật của khách hàng, vui lòng ghi lại và giữ an toàn. Nó nên được đối xử như mật khẩu và không thể được OpenProject lấy lại sau này.

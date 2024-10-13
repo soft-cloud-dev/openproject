@@ -109,7 +109,7 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite do
           notes.set_markdown "A note on copy"
           click_on "Copy and follow"
 
-          expect(page).to have_text "The job has been queued and will be processed shortly."
+          expect(page).to have_text("The job has been queued and will be processed shortly.", wait: 10)
 
           perform_enqueued_jobs
 
@@ -201,35 +201,17 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite do
         it "fails, informing of the reasons" do
           click_on "Copy and follow"
 
-          expect(page)
-            .to have_css(
-              ".op-toast.-error",
-              text: I18n.t("work_packages.bulk.none_could_be_saved", total: 3)
-            )
-
-          expect(page)
-            .to have_css(
-              ".op-toast.-error",
-              text: I18n.t("work_packages.bulk.selected_because_descendants", total: 3, selected: 2)
-            )
-
-          expect(page)
-            .to have_css(
-              ".op-toast.-error",
-              text: "#{work_package.id}: Type #{I18n.t('activerecord.errors.messages.inclusion')}"
-            )
-
-          expect(page)
-            .to have_css(
-              ".op-toast.-error",
-              text: "#{work_package2.id}: Type #{I18n.t('activerecord.errors.messages.inclusion')}"
-            )
-
-          expect(page)
-            .to have_css(
-              ".op-toast.-error",
-              text: "#{child.id} (descendant of selected): Type #{I18n.t('activerecord.errors.messages.inclusion')}"
-            )
+          expect_flash(type: :error, message: I18n.t("work_packages.bulk.none_could_be_saved", total: 3))
+          expect_flash(type: :error,
+                       message: I18n.t(
+                         "work_packages.bulk.selected_because_descendants", total: 3, selected: 2
+                       ))
+          expect_flash(type: :error,
+                       message: "#{work_package.id}: Type #{I18n.t('activerecord.errors.messages.inclusion')}")
+          expect_flash(type: :error,
+                       message: "#{work_package2.id}: Type #{I18n.t('activerecord.errors.messages.inclusion')}")
+          expect_flash(type: :error, message:
+            "#{child.id} (descendant of selected): Type #{I18n.t('activerecord.errors.messages.inclusion')}")
         end
 
         context "when the limit to move in the frontend is 0",
@@ -301,7 +283,7 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite do
 
     it "copies the work package" do
       context_menu.open_for work_package
-      context_menu.choose "Duplicate to other project"
+      context_menu.choose "Duplicate in another project"
 
       # On work packages move page
       expect_page_reload do
@@ -316,9 +298,7 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite do
 
       click_on "Copy and follow"
 
-      expect(page)
-        .to have_css(".op-toast.-success",
-                     text: I18n.t(:notice_successful_create))
+      expect_flash(message: I18n.t(:notice_successful_create))
 
       wp_page = Pages::FullWorkPackage.new(WorkPackage.last)
 

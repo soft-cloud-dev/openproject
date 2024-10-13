@@ -111,6 +111,20 @@ class Meeting < ApplicationRecord
   }
 
   ##
+  # Cache key for detecting changes to be shown to the user
+  def changed_hash
+    parts = Meeting
+      .unscoped
+      .where(id:)
+      .left_joins(:agenda_items, :sections)
+      .pick(MeetingAgendaItem.arel_table[:updated_at].maximum, MeetingSection.arel_table[:updated_at].maximum)
+
+    parts << lock_version
+
+    OpenProject::Cache::CacheKey.expand(parts)
+  end
+
+  ##
   # Return the computed start_time when changed
   def start_time
     if parse_start_time?
@@ -239,14 +253,15 @@ class Meeting < ApplicationRecord
 
   def set_initial_values
     # set defaults
-    write_attribute(:start_time, Date.tomorrow + 10.hours) if start_time.nil?
+    # Start date is set to tomorrow at 10 AM (Current users local time)
+    write_attribute(:start_time, User.current.time_zone.now.at_midnight + 34.hours) if start_time.nil?
     self.duration ||= 1
     update_derived_fields
   end
 
   def update_derived_fields
-    @start_date = start_time.to_date.iso8601
-    @start_time_hour = start_time.strftime("%H:%M")
+    @start_date = format_time_as_date(start_time, format: "%Y-%m-%d")
+    @start_time_hour = format_time(start_time, include_date: false, format: "%H:%M")
   end
 
   private

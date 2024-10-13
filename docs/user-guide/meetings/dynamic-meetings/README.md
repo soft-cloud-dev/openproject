@@ -41,6 +41,9 @@ The menu on the left will allow you to filter for upcoming or past meetings. You
 
 ![Meetings overview in openproject global modules](openproject_userguide_dynamic_meetings_overview.png)
 
+> [!TIP]
+> If you are interested in how the Meetings module is used by the OpenProject team, please take a look at [this blog article](https://www.openproject.org/blog/meeting-management-example/).
+
 ## Create and edit dynamic meetings
 
 ### Create a new meeting
@@ -55,7 +58,7 @@ To create a new meeting, click the green **+ Meeting** button in the upper right
 
 ![Create new meeting in OpenProject](openproject_userguide_create_new_meeting.png)
 
-Enter your meeting's title, type, location, start date and duration. You can also choose if you want to invite meeting participants via email after the meeting has been created (this option is activated by default). 
+Enter your meeting's title, type, location, start date and duration. You can also choose if you want to invite meeting participants via email after the meeting has been created (this option is disabled by default). 
 
 If you are creating a meeting from a global module you will first need to select a project to which the meeting is attributed. After you have selected a project, the list of potential participants (project members) will appear for you to select who to invite. After the meeting you can note who attended the meeting.
 
@@ -72,6 +75,12 @@ An edit screen will be displayed, where you can adjust the date, time, duration 
 ![edit-meeting](openproject_userguide_edit_screen.png)
 
 Do not forget to save the changes by clicking the green **Save** button. Cancel will bring you back to the details view.
+
+> [!TIP]
+>
+> If someone else edits or updates the current meeting page at the same time and saves their changes, you and all other users on the same page will be notified of this with a small banner at the top of the page. Click the **Reload** button to load the updated version of the page.
+>
+![Banner notifying that a meeting has been updated while a user is editing it in OpenProject meetings module](openproject_dynamic_meetings_page_update_reload_button.png)
 
 In order to edit the title of the meeting select the dropdown menu behind the three dots and select the **Edit meeting title**.
 
@@ -125,6 +134,9 @@ By default, when creating an agenda item, this will be pre-filled with the name 
 
 ![Add agenda item](openproject_userguide_add_agenda_item.png)
 
+> [!TIP]
+> If you need to store the agenda outside of OpenProject, you can generate an optimized PDF using the print function (Ctrl/Cmd + P).
+
 #### Link a work package to a meeting
 
 If you select the **Work package** option, you can link a work package by entering either a work package ID, or starting to type in a keyword, which will open a list of possible options.
@@ -157,6 +169,8 @@ You can add a work package to both upcoming or past meetings as long as the work
 >  [!TIP]
 > The upcoming meetings are displayed in chronological order, from the nearest meeting to the most distant. 
 > The past meetings are displayed in reverse chronological order, from the most recent meeting to the oldest.
+
+
 
 ## Meeting participants
 

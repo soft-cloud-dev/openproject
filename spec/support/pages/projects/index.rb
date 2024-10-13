@@ -33,7 +33,7 @@ module Pages
     class Index < ::Pages::Page
       include ::Components::Autocompleter::NgSelectAutocompleteHelpers
 
-      def path
+      def path(*)
         "/projects"
       end
 
@@ -127,6 +127,39 @@ module Pages
         end
       end
 
+      def expect_page_links(model:, current_page: 1)
+        within ".op-pagination--pages" do
+          pagination_links = page.all(".op-pagination--item-link")
+          expect(pagination_links.size).to be_positive
+
+          page_number_links = pagination_links.reject { |link| link.text =~ /previous|next/i }
+          page_number_links.each.with_index(1) do |pagination_link, page_number|
+            uri = URI.parse(pagination_link["href"])
+            expect(uri.path).to eq(path(model))
+            expect(uri.query).to include("page=#{page_number}")
+          end
+
+          if current_page > 1
+            expect(page).to have_link("Previous", href: "#{path(model)}?#{{ page: current_page - 1 }.to_query}")
+          else
+            expect(page).to have_link("Next", href: "#{path(model)}?#{{ page: current_page + 1 }.to_query}")
+          end
+        end
+      end
+
+      def expect_page_sizes(model:)
+        within ".op-pagination--options" do
+          pagination_links = page.all(".op-pagination--item-link")
+          expect(pagination_links.size).to be_positive
+          expect(page).to have_css(".op-pagination--item_current")
+
+          pagination_links.each do |pagination_link|
+            uri = URI.parse(pagination_link["href"])
+            expect(uri.path).to eq(path(model))
+          end
+        end
+      end
+
       def expect_filters_container_toggled
         expect(page).to have_css(".op-filters-form")
       end
@@ -136,7 +169,11 @@ module Pages
       end
 
       def expect_filter_set(filter_name)
-        expect(page).to have_css("li[filter-name='#{filter_name}']:not(.hidden)", visible: :hidden)
+        if filter_name == "name_and_identifier"
+          expect(page.find_by_id(filter_name).value).not_to be_empty
+        else
+          expect(page).to have_css("li[data-filter-name='#{filter_name}']:not(.hidden)", visible: :hidden)
+        end
       end
 
       def expect_filter_count(count)
@@ -185,40 +222,56 @@ module Pages
 
       def filter_by_active(value)
         set_filter("active", "Active", "is", [value])
-        apply_filters
+        wait_for_reload
       end
 
       def filter_by_public(value)
         set_filter("public", "Public", "is", [value])
-        apply_filters
+        wait_for_reload
       end
 
       def filter_by_favored(value)
         set_filter("favored", "Favorite", "is", [value])
-        apply_filters
+        wait_for_reload
       end
 
       def filter_by_membership(value)
         set_filter("member_of", "I am member", "is", [value])
-        apply_filters
+        wait_for_reload
       end
 
-      def set_filter(name, human_name, human_operator = nil, values = [])
-        select human_name, from: "add_filter_select"
-        selected_filter = page.find("li[filter-name='#{name}']")
+      def filter_by_name_and_identifier(value, send_keys: false)
+        set_name_and_identifier_filter([value], send_keys:)
+        wait_for_reload
+      end
 
+      def set_filter(name, human_name, human_operator = nil, values = [], send_keys: false)
+        if name == "name_and_identifier"
+          set_simple_filter(name, values, send_keys:)
+        else
+          set_advanced_filter(name, human_name, human_operator, values, send_keys:)
+        end
+      end
+
+      def set_simple_filter(_name, values, send_keys: false)
+        return unless values.any?
+
+        set_name_and_identifier_filter(values, send_keys:) # This is the only one simple filter at the moment.
+      end
+
+      def set_advanced_filter(name, human_name, human_operator = nil, values = [], send_keys: false)
+        select human_name, from: "add_filter_select"
+        selected_filter = page.find("li[data-filter-name='#{name}']")
         select(human_operator, from: "operator") unless boolean_filter?(name)
 
         within(selected_filter) do
           return unless values.any?
 
-          if name == "name_and_identifier"
-            set_name_and_identifier_filter(values)
-          elsif boolean_filter?(name)
+          if boolean_filter?(name)
             set_toggle_filter(values)
           elsif name == "created_at"
             select(human_operator, from: "operator")
-            set_created_at_filter(human_operator, values)
+            set_created_at_filter(human_operator, values, send_keys:)
           elsif /cf_\d+/.match?(name)
             select(human_operator, from: "operator")
             set_custom_field_filter(selected_filter, human_operator, values)
@@ -227,12 +280,11 @@ module Pages
       end
 
       def remove_filter(name)
-        page.find("li[filter-name='#{name}'] .filter_rem").click
-      end
-
-      def apply_filters
-        find(".advanced-filters--filters").click_on "Apply"
-        wait_for_reload
+        if name == "name_and_identifier"
+          page.find_by_id("name_and_identifier").find(:xpath, "following-sibling::button").click
+        else
+          page.find("li[data-filter-name='#{name}'] .filter_rem").click
+        end
       end
 
       def set_toggle_filter(values)
@@ -250,29 +302,46 @@ module Pages
         end
       end
 
-      def set_name_and_identifier_filter(values)
-        fill_in "value", with: values.first
-      end
-
-      def set_created_at_filter(human_operator, values)
-        case human_operator
-        when "on", "less than days ago", "more than days ago", "days ago"
-          fill_in "value", with: values.first
-        when "between"
-          fill_in "from_value", with: values.first
-          fill_in "to_value", with: values.second
+      def set_name_and_identifier_filter(values, send_keys: false)
+        if send_keys
+          find_field("name_and_identifier").send_keys values.first
+        else
+          fill_in "name_and_identifier", with: values.first
         end
       end
 
-      def set_custom_field_filter(selected_filter, human_operator, values)
-        if selected_filter[:"filter-type"] == "list_optional"
+      def set_created_at_filter(human_operator, values, send_keys: false)
+        case human_operator
+        when "on", "less than days ago", "more than days ago", "days ago"
+          if send_keys
+            find_field("value").send_keys values.first
+          else
+            fill_in "value", with: values.first
+          end
+        when "between"
+          if send_keys
+            find_field("from_value").send_keysvalues.first
+            find_field("to_value").send_keys values.second
+          else
+            fill_in "from_value", with: values.first
+            fill_in "to_value", with: values.second
+          end
+        end
+      end
+
+      def set_custom_field_filter(selected_filter, human_operator, values, send_keys: false)
+        if selected_filter[:"data-filter-type"] == "list_optional"
           if values.size == 1
             value_select = find('.single-select select[name="value"]')
             value_select.select values.first
           end
-        elsif selected_filter[:"filter-type"] == "date"
+        elsif selected_filter[:"data-filter-type"] == "date"
           if human_operator == "on"
-            fill_in "value", with: values.first
+            if send_keys
+              find_field("value").send_keys values.first
+            else
+              fill_in "value", with: values.first
+            end
           end
         end
       end
@@ -280,6 +349,7 @@ module Pages
       def open_filters
         retry_block do
           toggle_filters_section
+          expect(page).to have_css(".op-filters-form.-expanded")
           page.find_field("Add filter", visible: true)
         end
       end
@@ -486,8 +556,17 @@ module Pages
         within(field_component, &)
       end
 
+      def submit_config_view_dialog
+        page.find('[data-test-selector="op-project-list-configure-dialog-submit"]').click
+      end
+
       def within_table(&)
         within "#project-table", &
+      end
+
+      def project_in_first_row(column_text_separator: "\n")
+        first_row = within("#projects-table") { find(".op-project-row-component", match: :first) }
+        Project.find_by!(name: first_row.text.split(column_text_separator).first)
       end
 
       def within_row(project)

@@ -22,7 +22,7 @@ es:
         storages/project_storage:
           attributes:
             project_folder_id:
-              blank: Please select a folder.
+              blank: Seleccione una carpeta.
             project_folder_mode:
               mode_unavailable: no está disponible para este almacenamiento.
             project_ids:
@@ -31,7 +31,7 @@ es:
           attributes:
             host:
               authorization_header_missing: no está completamente configurado. La instancia de Nextcloud no recibe la cabecera "Autorización", que es necesaria para la autorización basada en token Bearer de solicitudes API. Por favor, compruebe la configuración de tu servidor HTTP.
-              cannot_be_connected_to: no admite conexiones.
+              cannot_be_connected_to: no se ha podido acceder. Asegúrese de que se puede acceder al host y de que la aplicación de integración de OpenProject está instalada.
               minimal_nextcloud_version_unmet: no cumple los requisitos mínimos de versión (debe ser Nextcloud 23 o posteriores)
               not_nextcloud_server: no es un servidor de Nextcloud
               op_application_not_installed: parece que no tienes la aplicación "Integración OpenProject" instalada. Por favor, instálala primero y vuelve a intentarlo.
@@ -60,17 +60,17 @@ es:
   project_module_storages: Archivos
   project_storages:
     edit_project_folder:
-      label: Edit project folder
+      label: Editar la carpeta del proyecto
     project_folder_mode:
       automatic: Gestionado automáticamente
       inactive: Ninguna carpeta específica
       manual: Carpeta existente gestionada manualmente
     remove_project:
-      deletion_failure_flash: Failed to remove the project from the storage. %{error}
+      deletion_failure_flash: Error al eliminar el proyecto del almacén. %{error}
       dialog:
         automatically_managed_appendix: Además, en este caso este almacenamiento tiene una carpeta de proyecto administrada automáticamente, se eliminarán sus archivos para siempre.
         confirmation_text: Confirme que entiende y desea eliminar este almacenamiento de archivos de este proyecto
-        heading: Eliminar proyecto de %{storage_type}
+        heading_text: Eliminar proyecto de %{storage}
         text: Esta acción es irreversible y eliminará todos los enlaces en los paquetes de trabajo de este proyecto a archivos y carpetas de ese almacenamiento.
       label: Eliminar proyecto
   services:
@@ -90,13 +90,16 @@ es:
         remote_folders: 'Leer el contenido de la carpeta de grupo:'
         rename_project_folder: 'Cambiar el nombre de la carpeta del proyecto gestionado:'
     errors:
+      messages:
+        error: Se ha producido un error inesperado. Compruebe los registros de OpenProject para obtener más información o póngase en contacto con un administrador
+        unauthorized: OpenProject no pudo autenticarse con el proveedor de almacenamiento. Asegúrese de que tiene acceso al mismo.
       models:
         copy_project_folders_service:
-          conflict: The folder %{destination_path} already exists. Interrupting process to avoid overwrites.
-          error: An unexpected error occurred. Please check OpenProject logs for more information or contact an administrator
-          forbidden: OpenProject could not access the source folder. Please check your permissions configuration on the Storage Provider
-          not_found: The source template location %{source_path} wasn't found.
-          unauthorized: OpenProject could not authenticate with the Storage Provider. Please check your storage configuration
+          conflict: La carpeta %{destination_path} ya existe. Interrumpiendo el proceso para evitar sobreescrituras.
+          error: Se ha producido un error inesperado. Compruebe los registros de OpenProject para obtener más información o póngase en contacto con un administrador.
+          forbidden: OpenProject no ha podido acceder a la carpeta de origen. Compruebe su configuración de permisos en el proveedor de almacenamiento
+          not_found: No se ha encontrado la ubicación de la plantilla de origen %{source_path}.
+          unauthorized: OpenProject no pudo autenticarse con el proveedor de almacenamiento. Compruebe su configuración de almacenamiento
         nextcloud_sync_service:
           attributes:
             add_user_to_group:
@@ -111,8 +114,8 @@ es:
             hide_inactive_folders:
               permission_not_set: no se han podido establecer permisos en %{path}.
             remote_folders:
-              not_allowed: El %{username} no tiene acceso al %{group_folder}. Compruebe los permisos de la carpeta en Nextcloud.
-              not_found: "No se ha encontrado %{group_folder}. Compruebe su configuración de Nextcloud."
+              not_allowed: The %{username} doesn't have access to the %{group_folder} folder. Please check the folder permissions on Nextcloud.
+              not_found: "%{group_folder} folder wasn't found. Please check your Nextcloud setup."
             remove_user_from_group:
               conflict: 'El usuario %{user} no se ha podido eliminar del grupo %{group} por la siguiente razón: %{reason}'
               failed_to_remove: 'El usuario %{user} no se ha podido eliminar del grupo %{group} por la siguiente razón: %{reason}'
@@ -122,10 +125,10 @@ es:
             set_folders_permissions:
               permission_not_set: no se han podido establecer permisos en %{path}.
           error: Se ha producido un error inesperado. Asegúrese de que su instancia de Nextcloud es accesible y compruebe los registros de los trabajadores de OpenProject para obtener más información.
-          group_does_not_exist: "%{group} does not exist. Check your Nextcloud instance configuration."
+          group_does_not_exist: "%{group} no existe. Compruebe la configuración de su instancia de Nextcloud."
           insufficient_privileges: OpenProject no tiene suficientes privilegios para añadir a %{user} a %{group}. Compruebe la configuración de su grupo en Nextcloud.
           not_allowed: Nextcloud bloquea la solicitud.
-          unauthorized: OpenProject no pudo sincronizarse con Nextcloud. Compruebe su almacenamiento y la configuración de Nextcloud.
+          unauthorized: OpenProject could not sync with Nextcloud. Please check your storage and Nextcloud configuration.
           user_does_not_exist: "%{user} no existe en Nextcloud."
         one_drive_sync_service:
           attributes:
@@ -144,14 +147,16 @@ es:
               permission_not_set: no se han podido establecer permisos en %{path}.
           error: Se ha producido un error inesperado. Asegúrese de que su instancia de Nextcloud es accesible y compruebe los registros de los trabajadores de OpenProject para obtener más información.
           not_allowed: OpenProject no tenía permiso para acceder a su unidad OneDrive. Compruebe los permisos establecidos en la aplicación Azure.
-          unauthorized: OpenProject no pudo sincronizarse con OneDrive. Compruebe su almacenamiento y la configuración de la aplicación Azure.
+          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
           user_does_not_exist: "%{user} no existe en Nextcloud."
+        upload_link_service:
+          not_found: No se ha podido encontrar la carpeta de destino %{folder} en %{storage_name}.
   storages:
     buttons:
       complete_without_setup: Completar sin usar
       done_complete_setup: Hecho, configuración completada
       done_continue: Hecho, continuar
-      open_storage: Open file storage
+      open_storage: Abrir almacenamiento de archivos
       replace_oauth_application: Reemplazar OpenProject OAuth
       replace_oauth_client: Reemplazar %{provider_type} OAuth
       save_and_continue: Guardar y continuar
@@ -209,6 +214,7 @@ es:
         client_id_wrong: El id de cliente OAuth 2 configurado no es válido. Por favor, compruebe la configuración.
         client_secret_wrong: El secreto de cliente OAuth 2 configurado no es válido. Por favor, compruebe la configuración.
         drive_id_wrong: No se ha podido encontrar el drive id configurado. Por favor, compruebe la configuración.
+        group_folder_not_found: No se ha podido encontrar la carpeta del grupo.
         group_folder_version_mismatch: La versión de la Carpeta de grupo no es compatible. Actualice su servidor Nextcloud.
         host_not_found: No se ha encontrado ningún servidor Nextcloud en la URL de host configurada. Compruebe la configuración.
         missing_dependencies: 'Falta una dependencia necesaria en el almacenamiento de archivos. Añada la siguiente dependencia: %{dependency}.'
@@ -216,8 +222,11 @@ es:
         placeholder: Compruebe su conexión con el servidor.
         subtitle: Validación de conexión
         tenant_id_wrong: El id de directorio (tenant) configurado no es válido. Por favor, compruebe la configuración.
-        unexpected_content: Contenido inesperado encontrado dentro la unidad.
+        unexpected_content:
+          nextcloud: Se ha encontrado contenido inesperado en la carpeta del grupo gestionado.
+          one_drive: Contenido inesperado encontrado dentro la unidad.
         unknown_error: No se ha podido validar la conexión. Se ha producido un error desconocido. Compruebe los registros del servidor para obtener más información.
+        userless_access_denied: La contraseña configurada de la aplicación no es válida.
       label_error: Error
       label_healthy: Correcto
       label_pending: Pendiente
@@ -277,7 +286,6 @@ es:
     label_active: Activo
     label_add_new_storage: Añadir nuevo almacenamiento
     label_automatic_folder: Nueva carpeta con permisos gestionados automáticamente
-    label_completed: Completado
     label_creation_time: Tiempo de creación
     label_creator: Autor
     label_delete_storage: Eliminar almacenamiento
@@ -289,7 +297,6 @@ es:
     label_file_storage: Almacenamiento de archivos
     label_host: URL del host
     label_inactive: Inactivo
-    label_incomplete: Incompleto
     label_managed_project_folders:
       application_password: Contraseña de aplicación
       automatically_managed_folders: Carpetas gestionadas automáticamente
@@ -314,18 +321,24 @@ es:
       not_connected: No conectado. El usuario debe iniciar sesión en el almacenamiento a través del siguiente %{link}.
     members_no_results: No hay miembros para mostrar.
     no_results: Aún no se han configurado almacenes de archivos.
-    notice_successful_storage_connection: |-
-      ¡Almacenamiento conectado con éxito! Recuerda activar el módulo y el almacenamiento específico en la configuración del proyecto de cada proyecto deseado para usarlo.
+    oauth_access_granted_modal:
+      access_granted: Acceso concedido
+      project_settings:
+        access_granted_screen_reader: Acceso concedido. Ya puede utilizar %{storage}
+        storage_ready: Ya está listo para utilizar %{storage}
+      storage_admin:
+        access_granted_screen_reader: Acceso concedido. Ya está listo para añadir proyectos a %{storage}
+        storage_ready: Ya está listo para añadir proyectos a %{storage}
     oauth_grant_nudge_modal:
-      access_granted: Acceso permitido
-      access_granted_screen_reader: Acceso concedido. Ya puede utilizar %{storage}.
-      body: Para obtener acceso a la carpeta del proyecto necesitas iniciar sesión en %{storage}.
       cancel_button_label: Lo haré más tarde
-      confirm_button_aria_label: Iniciar sesión en %{storage}
-      confirm_button_label: Iniciar sesión
+      heading: Es necesario iniciar sesión en %{provider_type}
+      login_button_aria_label: Iniciar sesión en %{storage}
+      login_button_label: "Inicio de sesión de %{provider_type}"
+      project_settings:
+        description: Para obtener acceso a la carpeta del proyecto necesitas iniciar sesión en %{storage}.
       requesting_access_to: Solicitando acceso a %{storage}
-      storage_ready: Ahora estás listo para usar %{storage}
-      title: Queda un paso más...
+      storage_admin:
+        description: Para poder añadir proyectos a este almacén necesita haber iniciado sesión en %{provider_type}. Inicie sesión e inténtelo de nuevo.
     open_project_storage_modal:
       success:
         subtitle: Se te está redirigiendo
@@ -369,6 +382,7 @@ es:
     storage_list_blank_slate:
       description: Añade un almacenamiento para verlos aquí.
       heading: Aún no tiene ningún almacenamiento.
+    successful_storage_connection: Storage connected successfully! Remember to activate the storage in the Projects tab for each desired project to use it.
     upsale:
       description: |-
         Integra tu OneDrive/SharePoint como almacenamiento de archivos con OpenProject. Sube archivos y vincúlalos directamente a paquetes de trabajo en un proyecto.

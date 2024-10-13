@@ -29,9 +29,12 @@
 # ++
 
 class Projects::ConfigureViewModalComponent < ApplicationComponent
+  include OpTurbo::Streamable
+
   MODAL_ID = "op-project-list-configure-dialog"
   QUERY_FORM_ID = "op-project-list-configure-query-form"
   COLUMN_HTML_NAME = "columns"
+  COLUMN_HTML_ID = "columns-select"
 
   options :query
 

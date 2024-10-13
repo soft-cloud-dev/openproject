@@ -91,7 +91,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
   let(:category) { create(:category, project:, name: "Demo") }
   let(:version) { create(:version, project:) }
   let(:export_time) { DateTime.new(2023, 6, 30, 23, 59) }
-  let(:export_time_formatted) { format_time(export_time, true) }
+  let(:export_time_formatted) { format_time(export_time, include_date: true) }
   let(:image_path) { Rails.root.join("spec/fixtures/files/image.png") }
   let(:priority) { create(:priority_normal) }
   let(:image_attachment) { Attachment.new author: user, file: File.open(image_path) }
@@ -241,6 +241,20 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
         expect(result.join(" ")).to eq(expected_result.join(" "))
         expect(result.join(" ")).not_to include("DisabledCustomField")
         expect(pdf[:images].length).to eq(2)
+      end
+    end
+
+    describe "with a faulty image" do
+      before do
+        # simulate a null pointer exception
+        # https://appsignal.com/openproject-gmbh/sites/62a6d833d2a5e482c1ef825d/exceptions/incidents/2326/samples/62a6d833d2a5e482c1ef825d-848752493603098719217252846401
+        # where attachment data is in the database but the file is missing, corrupted or not accessible
+        allow(image_attachment).to receive(:file)
+                                     .and_return(nil)
+      end
+
+      it "still finishes the export" do
+        expect(pdf[:images].length).to eq(0)
       end
     end
 

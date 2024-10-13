@@ -49,7 +49,7 @@ Rails.application.reloader.to_prepare do
                      },
                      permissible_on: :global,
                      require: :loggedin,
-                     enabled: -> { OpenProject::Configuration.backup_enabled? }
+                     visible: -> { OpenProject::Configuration.backup_enabled? }
 
       map.permission :create_user,
                      {
@@ -80,6 +80,11 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :global,
                      require: :loggedin,
                      contract_actions: { placeholder_users: %i[create read update] }
+
+      map.permission :view_user_email,
+                     {},
+                     permissible_on: :global,
+                     require: :loggedin
 
       map.permission :view_project,
                      { projects: [:show] },
@@ -217,7 +222,8 @@ Rails.application.reloader.to_prepare do
                        work_packages: %i[show index],
                        work_packages_api: [:get],
                        "work_packages/reports": %i[report report_details],
-                       "work_packages/menus": %i[show]
+                       "work_packages/menus": %i[show],
+                       "work_packages/hover_card": %i[show]
                      },
                      permissible_on: %i[work_package project],
                      contract_actions: { work_packages: %i[read] }
@@ -288,7 +294,7 @@ Rails.application.reloader.to_prepare do
 
       wpt.permission :export_work_packages,
                      {
-                       work_packages: %i[index all]
+                       work_packages: %i[index export_dialog all]
                      },
                      permissible_on: %i[work_package project],
                      dependencies: :view_work_packages

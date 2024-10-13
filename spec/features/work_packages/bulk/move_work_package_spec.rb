@@ -98,14 +98,24 @@ RSpec.describe "Moving a work package through Rails view", :js do
         it "copies them in the background and shows a status page", :with_cuprite do
           click_on "Move and follow"
           wait_for_reload
-          page.find_test_selector("job-status--header")
 
-          expect(page).to have_text "The job has been queued and will be processed shortly."
+          expect(page).to have_text("The job has been queued and will be processed shortly.", wait: 10)
 
           perform_enqueued_jobs
 
           work_package.reload
           expect(work_package.project_id).to eq(project2.id)
+
+          # Page displays the background job status dialog, then the job
+          # finishes and the dialog updates to "Successful update." with a
+          # redirect link. After 2 seconds it automatically clicks the link
+          # which navigates to /work_packages/:id which finally redirects to
+          # /projects/:project_identifier/work_packages/:id/activity
+          #
+          # The following lines wait for this job status dialog to be discarded.
+          expect(page).to have_text "Successful update."
+          # Clicking the link directly to save the 2 seconds of auto-click
+          click_on(I18n.t("job_status_dialog.redirect_link"))
 
           expect(page).to have_current_path "/projects/#{project2.identifier}/work_packages/#{work_package.id}/activity"
           page.find_by_id("projects-menu", text: "Target")
@@ -130,10 +140,7 @@ RSpec.describe "Moving a work package through Rails view", :js do
           click_on "Move and follow"
           wait_for_reload
 
-          expect(page)
-            .to have_css(".op-toast.-error",
-                         text: I18n.t(:"work_packages.bulk.none_could_be_saved",
-                                      total: 1))
+          expect_flash type: :error, message: I18n.t(:"work_packages.bulk.none_could_be_saved", total: 1)
 
           # Should NOT have moved
           child_wp.reload
@@ -160,10 +167,7 @@ RSpec.describe "Moving a work package through Rails view", :js do
             click_on "Move and follow"
           end
 
-          expect(page)
-            .to have_css(".op-toast.-error",
-                         text: I18n.t(:"work_packages.bulk.none_could_be_saved",
-                                      total: 1))
+          expect_flash type: :error, message: I18n.t(:"work_packages.bulk.none_could_be_saved", total: 1)
           child_wp.reload
           work_package.reload
           expect(work_package.project_id).to eq(project.id)
@@ -205,23 +209,16 @@ RSpec.describe "Moving a work package through Rails view", :js do
     end
 
     it "displays an error message explaining which work package could not be moved and why" do
-      expect(page)
-        .to have_css(".op-toast.-error",
-                     text: I18n.t("work_packages.bulk.could_not_be_saved"),
-                     wait: 10)
+      expect_flash(type: :error,
+                   message: I18n.t("work_packages.bulk.could_not_be_saved"))
+      expect_flash(type: :error,
+                   message: "#{work_package2.id}: Project #{I18n.t('activerecord.errors.messages.error_readonly')}")
 
-      expect(page)
-        .to have_css(
-          ".op-toast.-error",
-          text: "#{work_package2.id}: Project #{I18n.t('activerecord.errors.messages.error_readonly')}"
-        )
-
-      expect(page)
-        .to have_css(".op-toast.-error",
-                     text: I18n.t("work_packages.bulk.x_out_of_y_could_be_saved",
-                                  failing: 1,
-                                  total: 2,
-                                  success: 1))
+      expect_flash(type: :error, message:
+        I18n.t("work_packages.bulk.x_out_of_y_could_be_saved",
+               failing: 1,
+               total: 2,
+               success: 1))
 
       expect(work_package.reload.project_id).to eq(project2.id)
       expect(work_package2.reload.project_id).to eq(project.id)

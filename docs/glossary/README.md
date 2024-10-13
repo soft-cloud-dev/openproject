@@ -56,7 +56,7 @@ In OpenProject, authentication is an important element to guarantee a data prote
 - [See answers to frequently asked questions (FAQ) for authentication](../system-admin-guide/authentication/authentication-faq/)
 - [See our blog post on multi-factor authentication to improve data security](https://www.openproject.org/blog/multi-factor-authentication-for-data-security/)
 - [Read more about Two-factor authentication (2FA) in OpenProject](../system-admin-guide/authentication/two-factor-authentication/)
-- [Read more about LDAP Authentication in OpenProject](../system-admin-guide/authentication/ldap-authentication/)
+- [Read more about LDAP Authentication in OpenProject](../system-admin-guide/authentication/ldap-connections/)
 
 ## B
 
@@ -82,6 +82,10 @@ A board in OpenProject is a view that allows you to see your work packages as ca
 - [Blog post on 5 agile boards to boost efficiency in multi-team projects](https://www.openproject.org/blog/agile-boards/)
 
 ## C
+
+### CAPTCHA
+
+A CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) is a security mechanism used on websites to determine whether the user is a human or a bot. OpenProject offers [reCAPTCHA](../system-admin-guide/authentication/recaptcha/) and [Cloudflare Turnstile](../system-admin-guide/authentication/recaptcha/#cloudflare-turnstile-configuration) that system administrators can configure for their instance.
 
 ### Classic project management
 
@@ -135,7 +139,7 @@ A custom query in OpenProject consists of saved [filters](#filters), sort criter
 
 ### Dark mode
 
-The dark mode for OpenProject is a personal setting to display the application in a dark theme. Other available modes are the regular light mode and the (light) [high contrast mode](#high-contrast-mode). [Read in our documentation how to enable dark mode](../getting-started/my-account/#select-the-dark-mode).
+The dark mode for OpenProject is a personal setting to display the application in a dark [theme](#theme). Other available modes are the regular light mode and the (light) [high contrast mode](#high-contrast-mode). [Read in our documentation how to enable dark mode](../user-guide/my-account/#select-the-dark-mode).
 
 ### Dashboard
 
@@ -197,7 +201,7 @@ A Group in OpenProject is defined as a list of users which can be added as a mem
 
 ### High contrast mode
 
-OpenProject offers a high contrast mode to make it easier for visually impaired people to use the software. This mode can be selected in the personal [account settings](../getting-started/my-account/#my-account) and will only affect the individual user's experience.
+OpenProject offers a high contrast mode to make it easier for visually impaired people to use the software. This mode can be selected in the personal [account settings](../user-guide/my-account/#my-account) and will only affect the individual user's experience.
 
 ### Home page
 
@@ -214,6 +218,15 @@ Hybrid project management is an approach that combines elements of both classic 
 In OpenProject, you can choose from several integrations, such as the [Excel synchronization](#excel-synchronization) or the [Nextcloud integration](#nextcloud-integration). In contrast to a plugin, an integration refers to cross features between two software products (e.g., OpenProject and Nextcloud), where both pieces of software have code that is responsible for interacting with the other software, through e.g., an API. Whereas a [plugin](#plugin) is installed on top of / as part of the OpenProject installation. You'll need to actively install it. [See all available plugins and integrations for OpenProject](../system-admin-guide/integrations/).
 
 ## M
+
+### Macro
+
+Macros in OpenProject are dynamic shortcuts that help automate repetitive tasks. They work in editors like [work package](#work-package) descriptions, [wikis](#wiki) or [forums](#forum). For example, users can type 'workPackageValue:1234:subject' into a work package description and once saved, OpenProject will display the title of the work package with the ID 1234.
+
+**More information on macros in OpenProject**
+- [See a list of all possible work package attributes that can be used as macros in OpenProject](../user-guide/wysiwyg/#available-attributes-for-work-packages)
+- [Read a blog article with detailed descriptions and examples on how to use macros in OpenProject](https://www.openproject.org/blog/how-to-use-macros/)
+- [Learn about options for using macros in OpenProject's wikis](../user-guide/wiki/#macros)
 
 ### Meetings
 
@@ -383,6 +396,10 @@ Time and costs in OpenProject is defined as a [module](#module) which allows use
 
 The time tracking button in OpenProject is a feature to track time spent on work packages in real time. [Read more about logging time via the time tracking button in OpenProject](../user-guide/time-and-costs/time-tracking/#log-time-via-the-time-tracking-button).
 
+### Theme
+
+A theme is a visual customization setting that changes the overall look and feel of the application. In OpenProject, [Enterprise customers can set a custom color theme along with a custom logo](../system-admin-guide/design/). Please note: Users of all versions can choose a personal mode (e.g. [high contrast mode](#high-contrast-mode) or [dark mode](#dark-mode)), but the theme is set globally by an administrator in the design settings.
+
 ## U
 
 ### User
@@ -456,3 +473,7 @@ Work package types are the different items a work package can represent. Each wo
 ### Work package view
 
 A list of work packages is considered a view. The containing work packages in any view can be displayed a number of different ways. Examples for most used work package views are the [table view](#work-package-table), the full screen view or the split screen view. You can also display work packages  in a card view and use them in a [board](#board) to use agile methods. [Read more about work package views in OpenProject](../user-guide/work-packages/work-package-views/#work-packages-views).
+
+### WYSIWYG editor
+
+WYSIWYG stands for 'What you see is what you get'. A WYSIWYG editor is a content editing interface that allows users to create and edit content so that it visually resembles the final result. In OpenProject, you can use WYSIWYG editors in [wikis](#wiki), [forums](#forum) and [work package](#work-package) descriptions and comments.

@@ -31,6 +31,9 @@ fr:
     custom_styles:
       color_theme: "Thème de couleur"
       color_theme_custom: "(Personnalisé)"
+      tab_interface: "Interface"
+      tab_branding: "Image de marque"
+      tab_pdf_export_styles: "Styles d'exportation PDF"
       colors:
         primary-button-color: "Bouton principal"
         accent-color: "Couleur d'accentuation"
@@ -79,6 +82,7 @@ fr:
         contact: "Contactez-nous pour une démo"
       enterprise_info_html: "est un module de la version <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span>Enterprise."
       upgrade_info: "Veuillez passer à un plan payant pour l'activer et commencer à l'utiliser dans votre équipe."
+    jemalloc_allocator: Allocateur de mémoire Jemalloc
     journal_aggregation:
       explanation:
         text: "Les actions individuelles d'un utilisateur (par ex. mis à jour un lot de travaux deux fois) sont agrégés en une seule action si leur différence d'âge est inférieure à la période spécifiée. Elles seront affichées en une seule action dans l'application. Cela retardera également les notifications du même temps réduisant donc le nombre d'e-mails envoyés et affectera également le délai %{webhook_link}."
@@ -88,7 +92,7 @@ fr:
     is_active: actuellement affiché
     is_inactive: actuellement non affiché
   antivirus_scan:
-    not_processed_yet_message: "Le téléchargement est bloqué, car le fichier n'a pas encore été scanné par l'anti-virus. Veuillez réessayer plus tard."
+    not_processed_yet_message: "Le téléchargement est bloqué, car le fichier n'a pas encore été vérifié par l'anti-virus. Veuillez réessayer plus tard."
     quarantined_message: "Un virus a été détecté dans le fichier '%{filename}'. Il a été mis en quarantaine et ne peut être téléchargé."
     deleted_message: "Un virus a été détecté dans le fichier '%{filename}'. Le fichier a été supprimé."
     deleted_by_admin: "Le fichier en quarantaine '%{filename}' a été supprimé par un administrateur."
@@ -202,6 +206,17 @@ fr:
       title: "Actions personnalisées"
       description: "Les actions personnalisées sont des raccourcis en un clic vers un ensemble d'actions prédéfinies que vous pouvez rendre disponibles sur certains lots de travaux en fonction de l'état, rôle, type ou projet."
   custom_fields:
+    admin:
+      custom_field_projects:
+        is_for_all_blank_slate:
+          heading: Pour tous les projets
+          description: Ce champ personnalisé est activé dans tous les projets, car l'option « Pour tous les projets » est cochée. Il ne peut pas être désactivé pour les projets individuels.
+      items:
+        blankslate:
+          title: "Votre liste d'articles est vide"
+          description: "Commencez par ajouter des éléments au champ personnalisé de type hiérarchie. Chaque élément peut être utilisé pour créer une hiérarchie en dessous de lui. Pour naviguer et créer des sous-éléments à l'intérieur d'une hiérarchie, cliquez sur l'élément créé."
+      notice:
+        remember_items_and_projects: "N'oubliez pas de définir les éléments et les projets dans les onglets respectifs de ce champ personnalisé."
     text_add_new_custom_field: >
       Pour ajouter de nouveaux champs personnalisés à un projet, vous devez d’abord les créer avant de pouvoir les ajouter à ce projet.
     is_enabled_globally: "Est activé globalement"
@@ -246,11 +261,11 @@ fr:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
       members: "Membres du projet"
       overviews: "Vue d'ensemble du projet"
-      queries: "Lots de Travaux : vues enregistrées"
-      wiki_page_attachments: "Pages Wiki : pièces jointes"
+      queries: "Lots de travaux : vues enregistrées"
+      wiki_page_attachments: "Pages wiki : pièces jointes"
       work_package_attachments: "Lots de Travaux : pièces jointes"
       work_package_categories: "Lots de travaux : catégories"
-      work_package_file_links: "Lots de Travaux : liens vers des fichiers"
+      work_package_file_links: "Lots de travaux : liens vers des fichiers"
       work_package_shares: "Lots de travaux : partages"
     delete:
       scheduled: "La suppression a été planifiée et est effectuée en arrière-plan. Vous serez notifié du résultat."
@@ -264,6 +279,9 @@ fr:
       open_as_gantt: "Ouvrir comme vue Gantt"
       no_results_title_text: Aucun projet pour le moment
       no_results_content_text: Créer un nouveau projet
+      search:
+        label: Filtre sur le nom du projet
+        placeholder: Recherche par nom de projet
     lists:
       active: "Projets actifs"
       my: "Mes projets"
@@ -297,7 +315,7 @@ fr:
         actions:
           label_enable_single: "Actif dans ce projet, cliquez pour le désactiver"
           label_disable_single: "Inactif dans ce projet, cliquez pour l'activer"
-          deactivate_for_project: "Désactiver pour ce projet"
+          remove_from_project: "Supprimer du projet"
           label_enable_all: "Activer tout"
           label_disable_all: "Désactiver tout"
         is_required_blank_slate:
@@ -338,10 +356,10 @@ fr:
     filters:
       all_shares: "Tous les partages"
     menu:
-      all: "Tout"
+      all: "Tous"
       invited: "Invité"
       locked: "Verrouillé"
-      project_roles: "Rôle du projet"
+      project_roles: "Rôles du projet"
       wp_shares: "Partages du lot des travaux"
       groups: "Groupes"
     delete_member_dialog:
@@ -461,16 +479,20 @@ fr:
       no_results_content_text: Ajouter un rapport d'état
   statuses:
     edit:
+      status_color_text: |
+        Cliquez pour assigner ou modifier la couleur de ce statut.
+        Elle peut être utilisée pour mettre en évidence les lots de travaux dans le tableau.
+      status_excluded_from_totals_text: |-
+        Cochez cette option pour exclure les lots de travaux ayant ce statut des totaux de Travail, Travail restant et % réalisé dans une hiérarchie.
+      status_percent_complete_text: |-
+        In <a href="%{href}">status-based progress calculation mode</a>, the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         Cochez cette option pour marquer les paquets de travail avec ce statut en lecture seule.
         Aucuns attributs ne peut être changés à l’exception de l’État.
         <br/>
         <strong>Note</strong>: les valeurs héritées (ex: des enfants ou relations) continueront de s’appliquer.
-      status_excluded_from_totals_text: |-
-        Cochez cette option pour exclure les lots de travaux ayant ce statut des totaux de Travail, Travail restant et % réalisé dans une hiérarchie.
-      status_color_text: |
-        Cliquez pour assigner ou modifier la couleur de ce statut.
-        Elle peut être utilisée pour mettre en évidence les lots de travaux dans le tableau.
     index:
       no_results_title_text: Aucun statut de lots de travaux pour le moment.
       no_results_content_text: Ajouter un nouveau statut
@@ -523,7 +545,7 @@ fr:
       could_not_be_saved: "Les lots de travaux suivants n'ont pas pu être sauvegardés :"
       none_could_be_saved: "Aucun des %{total} lots de travaux n'a pu être mis à jour."
       x_out_of_y_could_be_saved: "%{failing} lots de travaux sur les %{total} n'ont pas pu être mis à jour alors que %{success} l'ont été."
-      selected_because_descendants: "Alors que %{selected} lots de travaux étaient sélectionnés, %{total} lots de travaux sont affectés, ce qui inclut les descendants."
+      selected_because_descendants: "Bien que %{selected} lots de travaux aient été sélectionnés, un total de %{total} lots de travaux sont concernés, y compris les descendants."
       descendant: "descendant de la sélection"
     move:
       no_common_statuses_exists: "Il n’y a pas de statut disponible pour tous les lots de travaux sélectionnés. Ce statut ne peut pas être changé."
@@ -613,6 +635,7 @@ fr:
         editable: "Modifiable"
         field_format: "Format"
         is_filter: "Utilisé comme filtre"
+        is_for_all: "Pour tous les projets"
         is_required: "Obligatoire"
         max_length: "Longueur maximale"
         min_length: "Longueur minimale"
@@ -627,6 +650,8 @@ fr:
         uid: "Id du client"
         secret: "Clé secrète du client"
         owner: "Propriétaire"
+        builtin: "Intégré"
+        enabled: "Actif"
         redirect_uri: "URI de redirection"
         client_credentials_user_id: "ID d'utilisateur d'informations d'identification client"
         scopes: "Portées"
@@ -798,6 +823,7 @@ fr:
         blank: "ne peut pas être vide."
         blank_nested: "doit avoir la propriété « %{property} » définie."
         cannot_delete_mapping: "est requis. Ne peut être supprimé."
+        is_for_all_cannot_modify: "s'applique à tous les projets et ne peut donc pas être modifié."
         cant_link_a_work_package_with_a_descendant: "Un lot de travaux ne peut pas être lié à l'une de ses sous-tâches."
         circular_dependency: "Cette relation créerait une dépendance circulaire."
         confirmation: "ne correspond pas à %{attribute}."
@@ -871,6 +897,10 @@ fr:
               minimum: "devez inclure au moins un filtre pour le principal, le contexte ou l'identifiant avec l'opérateur '='."
         custom_field:
           at_least_one_custom_option: "Au moins une option doit être disponible."
+        custom_fields_project:
+          attributes:
+            project_ids:
+              blank: "Veuillez sélectionner un projet."
         custom_actions:
           only_one_allowed: "(%{name}) seule valeur est autorisée."
           empty: "La zone (%{name}) ne peut pas être vide."
@@ -901,6 +931,8 @@ fr:
             name:
               blank: "est obligatoire. Veuillez sélectionner un nom."
               not_unique: "est déjà utilisé. Veuillez choisir un autre nom."
+        meeting:
+          error_conflict: "Impossible d'enregistrer, car la réunion a été mise à jour par quelqu'un d'autre entre-temps. Veuillez recharger la page."
         notifications:
           at_least_one_channel: "Au moins un canal pour envoyer des notifications doit être spécifié."
           attributes:
@@ -977,11 +1009,11 @@ fr:
             circular_dependency: "La relation créée un cercle de relations."
           attributes:
             to:
-              error_not_found: "lot de travaux dans la position `à` introuvable ou invisible"
-              error_readonly: "impossible de modifier le lien d'une relation existante `à`"
+              error_not_found: "lot de travaux dans la position 'à' introuvable ou invisible"
+              error_readonly: "impossible de modifier le lien d'une relation existante 'vers'"
             from:
-              error_not_found: "lot de travaux dans la position `de` introuvable ou invisible"
-              error_readonly: "impossible de modifier le lien d'une relation existante `de`"
+              error_not_found: "lot de travaux dans la position 'depuis' introuvable ou invisible"
+              error_readonly: "impossible de modifier le lien d'une relation existante 'depuis'"
         repository:
           not_available: "Le fournisseur de gestion de contrôle de sources n'est pas disponible"
           not_whitelisted: "n'est pas autorisé par la configuration."
@@ -1036,19 +1068,19 @@ fr:
             assigned_to:
               format: "%{message}"
             done_ratio:
-              does_not_match_work_and_remaining_work: "ne correspond pas au travail et au travail restant"
-              cannot_be_set_when_work_is_zero: "ne peut pas être défini lorsque le travail est nul"
-              must_be_set_when_remaining_work_is_set: "Requis lorsque le travail restant est défini."
-              must_be_set_when_work_and_remaining_work_are_set: "Requis lorsque le travail et les travaux restants sont définis."
+              does_not_match_work_and_remaining_work: "ne correspond pas au Travail et au Travail restant"
+              cannot_be_set_when_work_is_zero: "ne peut pas être défini lorsque le Travail est nul"
+              must_be_set_when_remaining_work_is_set: "requis lorsque le Travail restant est défini."
+              must_be_set_when_work_and_remaining_work_are_set: "requis lorsque le Travail et le Travail restant sont définis."
               inclusion: "doit être compris entre 0 et 100."
             due_date:
               not_start_date: "n'est pas identique à la date de début, bien que cela soit requis pour les jalons."
-              cannot_be_null: "ne peut pas être défini à NULL car la date de début et la durée sont connues."
+              cannot_be_null: "ne peut pas être définie à NULL car la date de début et la durée sont connues."
             duration:
               larger_than_dates: "est plus grand que l'intervalle entre la date de début et la date de fin."
               smaller_than_dates: "est plus petit que l'intervalle entre la date de début et la date de fin."
               not_available_for_milestones: "n'est pas disponible pour les lots de travaux de type jalon."
-              cannot_be_null: "ne peut pas être défini à NULL car la date de début et la date de fin sont connues."
+              cannot_be_null: "ne peut pas être définie à NULL car la date de début et la date de fin sont connues."
             parent:
               cannot_be_milestone: "ne peut pas être un jalon."
               cannot_be_self_assigned: "ne peut pas être assigné à lui-même."
@@ -1056,7 +1088,7 @@ fr:
               not_a_valid_parent: "est invalide."
             start_date:
               violates_relationships: "peut uniquement valoir %{soonest_start} ou une date ultérieure afin de ne pas violer les relations du lot de travaux."
-              cannot_be_null: "ne peut pas être défini à NULL car la date de fin et la durée sont connues."
+              cannot_be_null: "ne peut pas être définie à NULL car la date de fin et la durée sont connues."
             status_id:
               status_transition_invalid: "n'est pas valide, car aucune transition valide n'existe de l'ancien vers le nouveau statut pour les rôles de l'utilisateur actuel."
               status_invalid_in_type: "est invalide car le statut actuel n’existe pas dans ce type."
@@ -1069,15 +1101,17 @@ fr:
               does_not_exist: "La catégorie spécifiée n'existe pas."
             estimated_hours:
               not_a_number: "n'est pas une durée valide."
-              cant_be_inferior_to_remaining_work: "Ne peut être inférieur au Travail restant."
-              must_be_set_when_remaining_work_and_percent_complete_are_set: "Requis lorsque le travail restant et le % d'achèvement sont définis."
-              format: "%{message}"
+              cant_be_inferior_to_remaining_work: "ne peut être inférieur au travail restant."
+              must_be_set_when_remaining_work_and_percent_complete_are_set: "requis lorsque le Travail et le % Complété sont définis."
             remaining_hours:
               not_a_number: "n'est pas une durée valide."
-              cant_exceed_work: "Ne peut être supérieur au Travail."
-              must_be_set_when_work_is_set: "Requis lorsque le Travail est défini."
-              must_be_set_when_work_and_percent_complete_are_set: "Requis lorsque le travail et le % d'achèvement sont définis."
-              format: "%{message}"
+              cant_exceed_work: "ne peut être supérieur à Travail."
+              must_be_set_when_work_is_set: "requis lorsque le Travail est défini."
+              must_be_set_when_work_and_percent_complete_are_set: "requis lorsque le Travail et le % Complété sont définis."
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                doit être 0h lorsque le travail est défini et % Complété est de 100 %.
+              must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
+                doit être vide lorsque le Travail est vide et le % Complété est de 100 %.
           readonly_status: "Le lot de travaux est en lecture seule, ses attributs ne peuvent donc pas être changés."
         type:
           attributes:
@@ -1096,14 +1130,14 @@ fr:
               confirmation: "La confirmation du mot de passe ne correspond pas au mot de passe."
               format: "%{message}"
             password:
-              weak: "Doit contenir des caractères des classes suivantes (au moins %{min_count} sur %{all_count}) : %{rules}."
+              weak: "Doit contenir des caractères des classes suivantes (au moins %{min_count} sur %{all_count}) : %{rules}"
               lowercase: "minuscules (par exemple, « a »)"
               uppercase: "majuscule (e.g. « A »)"
               numeric: "numérique (e.g. « 1 »)"
               special: "spécial (e.g. « % »)"
               reused:
-                one: "a déjà été utilisé auparavant. S'il vous plaît, veuillez en choisir un différent."
-                other: "a déjà été utilisé auparavant. Veuillez faire un choix qui diffère de vos %{count} choix précédents."
+                one: "a déjà été utilisé. Veuillez choisir un mot de passe différent du précédent."
+                other: "a déjà été utilisé. Veuillez choisir un mot de passe différent des %{count} précédents."
               match:
                 confirm: "Confirmez le nouveau mot de passe."
                 description: "La confirmation du mot de passe doit correspondre à celui saisi dans le champ “Nouveau mot de passe”."
@@ -1338,6 +1372,7 @@ fr:
   button_expand_all: "Tout déplier"
   button_favorite: "Ajouter aux favoris"
   button_filter: "Filtrer"
+  button_finish_setup: "Terminer la configuration"
   button_generate: "Générer"
   button_list: "Liste"
   button_lock: "Verrouiller"
@@ -1390,8 +1425,8 @@ fr:
     failure_message: Échec de l'accord, impossible de continuer.
     title: Accord de l'utilisateur
     decline_warning_message: Vous avez refusé l'accord et avez été déconnecté.
-    user_has_consented: L'utilisateur a accepté votre déclaration configurée au moment donné.
-    not_yet_consented: L'utilisateur n'a pas encore donné son accord, il sera demandé lors de la prochaine connexion.
+    user_has_consented: L'utilisateur a donné son consentement à votre [texte d'information sur le consentement configuré](consent_settings).
+    not_yet_consented: L'utilisateur n'a pas encore donné son consentement à votre [texte d'information sur le consentement configuré](consent_settings). Un rappel lui sera envoyé lors de sa prochaine connexion.
     contact_mail_instructions: Définissez l'adresse mail à laquelle les utilisateurs peuvent joindre un contrôleur de données pour effectuer des modifications de données ou des demandes de suppression.
     contact_your_administrator: Veuillez contacter votre administrateur si vous souhaitez que votre compte soit supprimé.
     contact_this_mail_address: Veuillez contacter %{mail_address} si vous voulez que votre compte soit supprimé.
@@ -1624,7 +1659,7 @@ fr:
   error_menu_item_not_saved: L'élément de menu n'a pas pu être sauvegardé
   error_wiki_root_menu_item_conflict: >
     Impossible de renommer "%{old_name}" en "%{new_name}" en raison d’un conflit dans l’élément de menu résultant avec l’élément de menu existant "%{existing_caption}" (%{existing_identifier}).
-  error_external_authentication_failed: "Une erreur s'est produite lors de l'authentification externe. Veuillez réessayer."
+  error_external_authentication_failed_message: "Une erreur s'est produite lors de l'authentification externe : %{message}"
   error_attribute_not_highlightable: "Attribut(s) ne pouvant pas être mis en surbrillance: %{attributes}"
   events:
     changeset: "Lot de modification édité"
@@ -1643,9 +1678,71 @@ fr:
       project: "Projet : %{name}"
       subproject: "Sous-projet : %{name}"
   export:
-    your_work_packages_export: "Exportation de vos lots de travaux"
-    succeeded: "Export terminé avec succès"
-    failed: "L'export a échoué : %{message}"
+    dialog:
+      title: "Exporter"
+      submit: "Exporter"
+      format:
+        label: "Format de fichier"
+        options:
+          csv:
+            label: "CSV"
+          pdf:
+            label: "PDF"
+          xls:
+            label: "XLS"
+      columns:
+        input_label_report: "Ajouter des colonnes à la table d'attributs"
+        input_caption_report: "Par défaut, tous les attributs ajoutés en tant que colonnes dans la liste des lots de travaux sont sélectionnés. Les champs de type texte long ne sont pas disponibles dans la table des attributs, mais peuvent être affichés en dessous."
+        input_caption_table: "Par défaut, tous les attributs ajoutés en tant que colonnes dans la liste des lots de travaux sont sélectionnés. Les champs de type texte long ne sont pas disponibles dans les exports basés sur la table."
+      pdf:
+        export_type:
+          label: "Type d'export PDF"
+          options:
+            table:
+              label: "Table"
+              caption: "Exporter la liste des lots de travaux dans une table avec les colonnes souhaitées."
+            report:
+              label: "Rapport"
+              caption: "Exportez le lot de travaux dans un rapport détaillé de tous les lots de travaux de la liste."
+            gantt:
+              label: "Diagramme de Gantt"
+              caption: "Exportez la liste des lots de travaux dans un diagramme de Gantt."
+        include_images:
+          label: "Inclure des images"
+          caption: "Excluez les images pour réduire la taille de l'exportation PDF."
+        gantt_zoom_levels:
+          label: "Niveaux de zoom"
+          caption: "Sélectionnez le niveau de zoom pour les dates affichées dans le graphique."
+          options:
+            days: "Jours"
+            weeks: "Semaines"
+            months: "Mois"
+            quarters: "Trimestres"
+        column_width:
+          label: "Largeur des colonnes du tableau"
+          options:
+            narrow: "Étroite"
+            medium: "Moyenne"
+            wide: "Large"
+            very_wide: "Très large"
+        paper_size:
+          label: "Format du papier"
+          caption: "Plusieurs pages peuvent être exportées en fonction de la taille de la carte."
+        long_text_fields:
+          input_caption: "Par défaut, tous les champs de texte long sont sélectionnés."
+          input_label: "Ajouter des champs de texte longs"
+          input_placeholder: "Recherche de champs de texte longs"
+          drag_area_label: "Gérer les champs de texte longs"
+      xls:
+        include_relations:
+          label: "Inclure les relations"
+          caption: "Cette option crée un double de chaque lot de travaux pour chaque relation qu'il a avec un autre lot de travaux."
+        include_descriptions:
+          label: "Inclure des descriptions"
+          caption: "Cette option permet d'ajouter une colonne de description au format brut."
+    your_work_packages_export: "Les lots de travaux sont exportés"
+    succeeded: "Exportation terminée"
+    failed: "Une erreur s'est produite lors de l'exportation des lots de travaux : %{message}"
     format:
       atom: "Atom"
       csv: "CSV"
@@ -1717,6 +1814,8 @@ fr:
       progress_mode_changed_to_status_based: "Mise à jour du calcul de la progression"
       status_changed: "Statut  « %{status_name} »"
       system_update: "Mise à jour du système OpenProject :"
+      total_percent_complete_mode_changed_to_work_weighted_average: "Le calcul des totaux de % d'achèvement est désormais pondéré par le travail."
+      total_percent_complete_mode_changed_to_simple_average: "Le calcul des totaux de % d'achèvement est désormais basé sur une simple moyenne des seules valeurs de % d'achèvement."
     cause_descriptions:
       work_package_predecessor_changed_times: par changement vers le prédécesseur %{link}
       work_package_parent_changed_times: par changement vers le parent %{link}
@@ -1734,7 +1833,7 @@ fr:
       progress_mode_changed_to_status_based: Le calcul de la progression est désormais basé sur le statut
       status_excluded_from_totals_set_to_false_message: désormais inclus dans les totaux de la hiérarchie
       status_excluded_from_totals_set_to_true_message: désormais exclus des totaux de la hiérarchie
-      status_percent_complete_changed: "% réalisé passé de %{old_value} % à %{new_value} %"
+      status_percent_complete_changed: "Le % d'achèvement a changé de %{old_value} % à %{new_value} %"
       system_update:
         file_links_journal: >
           À partir de maintenant, l'activité liée aux liens de fichiers (fichiers stockés sur des supports externes) apparaîtra ici dans l'onglet Activité. Les activités suivantes concernent des liens déjà existants :
@@ -1744,6 +1843,10 @@ fr:
           Le calcul de la progression est automatiquement <a href="%{href}" target="_blank">ajusté avec la mise à jour de la version</a>.
         totals_removed_from_childless_work_packages: >-
           Les totaux de travail et de progression sont automatiquement supprimés pour les lots de travaux non parents avec <a href="%{href}" target="_blank">la mise à jour de la version</a>. Il s'agit d'une tâche de maintenance qui peut être ignorée.
+      total_percent_complete_mode_changed_to_work_weighted_average: >-
+        Les lots de travaux enfants sans travail sont ignorés.
+      total_percent_complete_mode_changed_to_simple_average: >-
+        Les valeurs de travail des lots de travaux enfants sont ignorées.
   links:
     configuration_guide: "Guide de configuration"
     get_in_touch: "Vous avez des questions ? Contactez-nous."
@@ -1843,7 +1946,8 @@ fr:
   label_additional_workflow_transitions_for_assignee: "Transitions supplémentaires autorisées lorsque l'utilisateur est l'assigné"
   label_additional_workflow_transitions_for_author: "Transitions supplémentaires autorisées lorsque l'utilisateur est l'auteur"
   label_administration: "Administration"
-  label_advanced_settings: "Paramètres avancés"
+  label_interface_colors: "Couleurs de l'interface"
+  label_interface_colors_description: "Ces couleurs contrôlent l'apparence de l'application. Si vous les modifiez, le thème sera automatiquement remplacé par le thème personnalisé, mais nous ne pouvons pas garantir la conformité aux normes minimales d'accessibilité (WCAG 2.1). "
   label_age: "Âge"
   label_ago: "il y a"
   label_all: "tous"
@@ -1876,6 +1980,7 @@ fr:
   label_attribute_expand_text: "Le texte complet pour « %{attribute} »."
   label_authentication: "Authentification"
   label_authentication_settings: "Paramètres d'authentification"
+  label_available_custom_fields_projects: "Projets de champs personnalisés disponibles"
   label_available_global_roles: "Rôles globaux disponibles"
   label_available_project_attributes: "Attributs de projet disponibles"
   label_available_project_forums: "Forums disponibles"
@@ -1905,6 +2010,7 @@ fr:
   label_calendars_and_dates: "Calendriers et dates"
   label_calendar_show: "Afficher le calendrier"
   label_category: "Catégorie"
+  label_completed: Terminé
   label_consent_settings: "Accord de l'utilisateur"
   label_wiki_menu_item: Élément de menu wiki
   label_select_main_menu_item: Sélectionner nouvel élément de menu principal
@@ -1948,6 +2054,7 @@ fr:
   label_copy_project: "Copier projet"
   label_core_version: "Version du cœur"
   label_core_build: "Construction de base"
+  label_created_by: "Créé par %{user}"
   label_current_status: "Statut actuel"
   label_current_version: "Version actuelle"
   label_custom_field_add_no_type: "Ajouter ce champ à un type de lot de travaux"
@@ -1955,6 +2062,7 @@ fr:
   label_custom_field_plural: "Champs personnalisés"
   label_custom_field_default_type: "Type défaut"
   label_custom_style: "Apparence"
+  label_custom_style_description: "Choisissez l'apparence d'OpenProject avec des thèmes, sélectionnez les couleurs par défaut à utiliser dans l'application et l'apparence des exportations."
   label_dashboard: "Tableau de bord"
   label_database_version: "Version de PostgreSQL"
   label_date: "Date"
@@ -2004,7 +2112,7 @@ fr:
   label_enterprise: "Entreprise"
   label_enterprise_active_users: "%{current}/%{limit} utilisateurs actifs inscrits"
   label_enterprise_edition: "Version Entreprise"
-  label_enterprise_support: "Assistance Enterprise"
+  label_enterprise_support: "Support Enterprise"
   label_enterprise_addon: "add-on Enterprise"
   label_environment: "Environement"
   label_estimates_and_progress: "Estimations et progression"
@@ -2051,6 +2159,7 @@ fr:
   label_here: ici
   label_hide: "Masquer"
   label_history: "Historique"
+  label_hierarchy: "Hiérarchie"
   label_hierarchy_leaf: "Feuille de hiérarchie"
   label_home: "Accueil"
   label_subject_or_id: "Objet ou ID"
@@ -2062,6 +2171,7 @@ fr:
   label_inactive: "Désactivé"
   label_incoming_emails: "Courriels entrants"
   label_includes: "comporte"
+  label_incomplete: Incomplet
   label_include_sub_projects: Inclure les sous-projets
   label_index_by_date: "Index par date"
   label_index_by_title: "Index par titre"
@@ -2072,12 +2182,14 @@ fr:
   label_internal: "Interne"
   label_introduction_video: "Vidéo de présentation"
   label_invite_user: "Inviter utilisateur"
+  label_item: "Élément"
+  label_item_plural: "Éléments"
   label_share: "Partager"
   label_share_project_list: "Partager la liste des projets"
   label_share_work_package: "Partager le lot de travaux"
-  label_show_hide: "Afficher/masquer"
-  label_show_hide_n_items: "Afficher/masquer %{count} éléments"
   label_show_all_registered_users: "Afficher tous les utilisateurs enregistrés"
+  label_show_less: "Afficher moins"
+  label_show_more: "Afficher plus"
   label_journal: "Journal"
   label_journal_diff: "Comparaison de description"
   label_language: "Langue"
@@ -2148,14 +2260,14 @@ fr:
   label_more: "Plus"
   label_more_than_ago: "il y a plus de quelques jours"
   label_move_work_package: "Déplacer le Lot de Travaux"
-  label_my_account: "Mon compte"
+  label_my_account: "Paramètres du compte"
   label_my_activity: "Mon activité"
   label_my_account_data: "Info sur mon compte"
   label_my_avatar: "Mon avatar"
   label_my_queries: "Mes requêtes personnalisées"
   label_name: "Nom"
   label_never: "Jamais"
-  label_new: "nouveau"
+  label_new: "Nouveau"
   label_new_features: "Nouvelles fonctionnalités"
   label_new_statuses_allowed: "Nouveaux statuts autorisés"
   label_news_singular: "Actualités"
@@ -2175,6 +2287,7 @@ fr:
   label_no_parent_page: "Aucune page parente"
   label_nothing_display: "Rien à afficher"
   label_nobody: "personne"
+  label_not_configured: "Non configuré"
   label_not_found: "non trouvé"
   label_none: "aucune"
   label_none_parentheses: "(none)"
@@ -2185,7 +2298,7 @@ fr:
   label_operator_none: "est vide"
   label_operator_equals_or: "est (OU)"
   label_operator_equals_all: "est (ET)"
-  label_operator_shared_with_user_any: "tout"
+  label_operator_shared_with_user_any: "tous"
   label_open_menu: "Ouvrir le menu"
   label_open_work_packages: "ouverts"
   label_open_work_packages_plural: "ouverts"
@@ -2227,6 +2340,7 @@ fr:
   label_product_version: "Version du produit"
   label_profile: "Profil"
   label_percent_complete: "% réalisé"
+  label_progress_tracking: "Suivi des progrès"
   label_project: "Projet"
   label_project_activity: "Activité du projet"
   label_project_attribute_plural: "Attributs du projet"
@@ -2296,6 +2410,8 @@ fr:
   label_role_plural: "Rôles"
   label_role_search: "Assigner un rôle aux nouveaux membres"
   label_scm: "SCM"
+  label_scroll_left: "Défilement vers la gauche"
+  label_scroll_right: "Défilement vers la droite"
   label_search: "Recherche"
   label_search_by_name: "Rechercher par nom"
   label_send_information: "Envoyer de nouveaux identifiants à l'utilisateur"
@@ -2410,7 +2526,6 @@ fr:
   label_work_package_new: "Nouveau Lot de Travaux"
   label_work_package_edit: "Éditer le lot de travaux %{name}"
   label_work_package_plural: "Lots de Travaux"
-  label_work_packages_settings: "Paramètres des lots de travaux"
   label_work_package_status: "Statut du lot de travaux"
   label_work_package_status_new: "Nouveau statut"
   label_work_package_status_plural: "Statuts du lot de travaux"
@@ -2799,6 +2914,7 @@ fr:
   permission_view_shared_work_packages: "Voir les partages du lot des travaux"
   permission_view_time_entries: "Voir temps passé"
   permission_view_timelines: "Voir les lignes du temps"
+  permission_view_user_email: "View users' mail addresses"
   permission_view_wiki_edits: "Voir l'historique du wiki"
   permission_view_wiki_pages: "Voir le wiki"
   permission_work_package_assigned: "Devenir assigné/responsable"
@@ -3049,11 +3165,15 @@ fr:
   setting_hours_per_day_explanation: >-
     Cela définit ce qui est considéré comme un « jour » lors de l'affichage de la durée en jours et en heures (par exemple, si un jour dure 8 heures, 32 heures représentent 4 jours).
   setting_invitation_expiration_days: "L'émail d’activation expire après"
-  setting_work_package_done_ratio: "Calcul de la progression"
+  setting_work_package_done_ratio: "Mode de calcul de l'avancement"
   setting_work_package_done_ratio_field: "Basé sur le travail"
+  setting_work_package_done_ratio_field_caption_html: >-
+    Le <i>% d'achèvement</i> peut être fixé librement sur n'importe quelle valeur. Si vous saisissez une valeur facultative pour le <i>travail</i>, le <i>travail restant</i> sera automatiquement dérivé.
   setting_work_package_done_ratio_status: "Basé sur le statut"
+  setting_work_package_done_ratio_status_caption_html: >-
+    Chaque statut est associé à une valeur de <i>% d'achèvement</i>. Le changement de statut modifie le <i>% d'achèvement</i>.
   setting_work_package_done_ratio_explanation_html: >
-    En mode <b>Basé sur le travail</b>, le % réalisé est calculé à partir de la quantité de travail effectuée par rapport au travail total. En mode <b>Basé sur le statut</b>, chaque statut est associé à une valeur de % réalisé. La modification du statut entraîne une modification du % réalisé.
+    En mode <b>Basé sur le travail</b>, le % d'achèvement peut être librement défini sur n'importe quelle valeur. Si vous saisissez une valeur pour le travail, le travail restant sera automatiquement dérivé. En mode <b>Basé sur le statut</b>, chaque état a une valeur de % d'achèvement associée. Le changement de statut changera la valeur de % d'achèvement.
   setting_work_package_properties: "Propriétés du Lot de Travaux"
   setting_work_package_startdate_is_adddate: "Utiliser la date actuelle comme date de début des nouveaux lots de travaux"
   setting_work_packages_projects_export_limit: "Limite d'exportation des lots de travaux/projets"
@@ -3072,6 +3192,13 @@ fr:
   setting_password_min_length: "Longueur minimale"
   setting_password_min_adhered_rules: "Nombre minimale des classe de caractère requise"
   setting_per_page_options: "Options des objets par page"
+  setting_percent_complete_on_status_closed: "% d'achèvement lorsque le statut est fermé"
+  setting_percent_complete_on_status_closed_no_change: "Aucun changement"
+  setting_percent_complete_on_status_closed_no_change_caption_html: >-
+    La valeur du <i>% d'achèvement</i> ne changera pas même si un lot de travaux est clôturé.
+  setting_percent_complete_on_status_closed_set_100p: "Réglé automatiquement à 100 %"
+  setting_percent_complete_on_status_closed_set_100p_caption: >-
+    Un lot de travaux clôturé est considéré comme terminé.
   setting_plain_text_mail: "Courriel au format texte (pas de HTML)"
   setting_protocol: "Protocole"
   setting_project_gantt_query: "Vue Gantt du portefeuille du projet"
@@ -3096,6 +3223,13 @@ fr:
   setting_sys_api_enabled: "Activer le service web de gestion de dépôt"
   setting_sys_api_description: "Le service web de gestion de dépôt fournit l'intégration et l'autorisation d'accès aux dépôts."
   setting_time_format: "Heure"
+  setting_total_percent_complete_mode: "Calcul des totaux de la hiérarchie en % d'achèvement"
+  setting_total_percent_complete_mode_work_weighted_average: "Pondéré par le travail"
+  setting_total_percent_complete_mode_work_weighted_average_caption_html: >-
+    Le <i>% d'achèvement total</i> sera pondéré en fonction du <i>travail</i> de chaque lot de travaux repris dans la hiérarchie. Les lots de travaux sans <i>travail</i> seront ignorés.
+  setting_total_percent_complete_mode_simple_average: "Moyenne simple"
+  setting_total_percent_complete_mode_simple_average_caption_html: >-
+    Le <i>travail</i> est ignoré et le <i>% d'achèvement total</i> sera une simple moyenne des valeurs de <i>% d'achèvement</i> des lots de travaux repris dans la hiérarchie.
   setting_accessibility_mode_for_anonymous: "Activer le mode d'accessibilité pour les utilisateurs anonymes"
   setting_user_format: "Format du nom d'utilisateur"
   setting_user_default_timezone: "Fuseau horaire par défaut des utilisateurs"
@@ -3392,7 +3526,7 @@ fr:
     unlock_and_reset_failed_logins: "Déverrouiller et réinitialiser les échecs de connexion"
   version_status_closed: "clôturé"
   version_status_locked: "verrouillé"
-  version_status_open: "ouverts"
+  version_status_open: "ouvert"
   note: Note
   note_password_login_disabled: "L'authentification via mot de passe a été désactivé par %{configuration}."
   warning: Attention
@@ -3435,9 +3569,25 @@ fr:
     progress:
       label_note: "Note :"
       modal:
-        work_based_help_text: "Le % réalisé est automatiquement dérivé de Travail et Travail restant."
+        work_based_help_text: "Chaque champ est calculé automatiquement à partir des deux autres lorsque cela est possible."
         status_based_help_text: "Le % réalisé est défini par le statut du lot de travaux."
         migration_warning_text: "Dans le mode de calcul de la progression basé sur le travail, le % réalisé ne peut pas être défini manuellement et est lié au travail. La valeur existante a été conservée mais ne peut pas être modifiée. Veuillez d'abord renseigner Travail."
+      derivation_hints:
+        done_ratio:
+          cleared_because_remaining_work_is_empty: "Effacé parce que le travail restant est vide."
+          cleared_because_work_is_0h: "Effacé parce que le travail est de 0 h."
+          derived: "Dérivé du travail et du travail restant."
+        estimated_hours:
+          cleared_because_remaining_work_is_empty: "Effacé parce que le travail restant est vide."
+          derived: "Dérivé du travail restant et du % d'achèvement."
+          same_as_remaining_work: "Régler à la même valeur que le travail restant."
+        remaining_hours:
+          cleared_because_work_is_empty: "Effacé parce que le travail est vide."
+          cleared_because_percent_complete_is_empty: "Effacé parce que le % d'achèvement est vide."
+          decreased_by_delta_like_work: "Diminué de %{delta}, correspondant à la réduction du travail."
+          derived: "Dérivé du travail et du % d'achèvement."
+          increased_by_delta_like_work: "Augmenté de %{delta}, correspondant à l'augmentation du travail."
+          same_as_work: "Régler à la même valeur que le travail."
     permissions:
       comment: "Commentaire"
       comment_description: "Peut consulter et commenter ce lot de travaux."
@@ -3628,12 +3778,16 @@ fr:
     close_warning: "Ignorer cet avertissement."
   oauth:
     application:
+      builtin: Application d'instance intégrée
+      confidential: Confidentiel
       singular: "Application OAuth"
       plural: "Applications OAuth"
       named: "Application OAuth '%{name}'"
       new: "Nouvelle application Oauth"
+      non_confidential: Non confidentiel
       default_scopes: "(Portée par défaut)"
       instructions:
+        enabled: "Activez cette application et permettez aux utilisateurs de l'utiliser pour attribuer des autorisations."
         name: "Le nom de votre application. Ceci sera affiché aux autres utilisateurs sur autorisation."
         redirect_uri_html: >
           Les URL autorisées où peuvent être redirigés les utilisateurs. Une entrée par ligne. <br/> Si vous enregistrez une application de bureau, utilisez l'URL suivante.
@@ -3642,6 +3796,10 @@ fr:
         client_credential_user_id: "ID utilisateur facultatif à emprunter lorsque les clients utilisent cette application. Laisser vide pour permettre l'accès public uniquement"
         register_intro: "Si vous développez une application client OAuth API pour OpenProject, vous pouvez l'enregistrer en utilisant ce formulaire pour qu’elle soit utilisée par tous les utilisateurs."
         default_scopes: ""
+    header:
+      builtin_applications: Applications OAuth intégrées
+      other_applications: Autres applications OAuth
+    empty_application_lists: Aucune application OAuth n'a été enregistrée.
     client_id: "Id du client"
     client_secret_notice: >
       Il s’agit de la seule fois où nous pouvons imprimer le secret du client, veuillez en prendre note et le garder dans un lieu sûr. Il doit être traité comme un mot de passe et ne peut pas être récupéré par OpenProject ultérieurement.

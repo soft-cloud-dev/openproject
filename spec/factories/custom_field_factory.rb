@@ -57,6 +57,10 @@ FactoryBot.define do
       RequestStore.clear!
     end
 
+    trait :multi_value do
+      multi_value { true }
+    end
+
     trait :boolean do
       _format_name { "boolean" }
       field_format { "bool" }
@@ -136,7 +140,7 @@ FactoryBot.define do
 
     trait :multi_list do
       list
-      multi_value { true }
+      multi_value
     end
 
     trait :version do
@@ -145,7 +149,7 @@ FactoryBot.define do
 
     trait :multi_version do
       field_format { "version" }
-      multi_value { true }
+      multi_value
     end
 
     trait :user do
@@ -154,7 +158,7 @@ FactoryBot.define do
 
     trait :multi_user do
       field_format { "user" }
-      multi_value { true }
+      multi_value
     end
 
     trait :link do
@@ -217,8 +221,11 @@ FactoryBot.define do
       factory :float_wp_custom_field, traits: [:float]
       factory :date_wp_custom_field, traits: [:date]
       factory :list_wp_custom_field, traits: [:list]
+      factory :multi_list_wp_custom_field, traits: [:multi_list]
       factory :version_wp_custom_field, traits: [:version]
+      factory :multi_version_wp_custom_field, traits: [:multi_version]
       factory :user_wp_custom_field, traits: [:user]
+      factory :multi_user_wp_custom_field, traits: [:multi_user]
       factory :link_wp_custom_field, traits: [:link]
     end
 

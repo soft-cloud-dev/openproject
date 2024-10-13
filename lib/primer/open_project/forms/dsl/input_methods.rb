@@ -24,6 +24,14 @@ module Primer
           def storage_manual_project_folder_selection(**)
             add_input StorageManualProjectFolderSelectionInput.new(builder: @builder, form: @form, **)
           end
+
+          def color_select_list(**, &)
+            add_input ColorSelectInput.new(builder:, form:, **, &)
+          end
+
+          def html_content(**, &)
+            add_input HtmlContentInput.new(builder: @builder, form: @form, **, &)
+          end
         end
       end
     end

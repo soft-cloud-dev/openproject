@@ -116,7 +116,7 @@ RSpec.describe "Work display", :js do
     include_examples "work display", expected_text: "0h·Σ 3h"
   end
 
-  context "with just total work (parent work unset)" do
+  context "with just total work (parent work empty)" do
     let_work_packages(<<~TABLE)
       hierarchy   | work |
       parent      |      |
@@ -186,7 +186,7 @@ RSpec.describe "Work display", :js do
         visit admin_settings_working_days_and_hours_path
         select "Days and hours", from: "Duration format"
         click_on "Apply changes"
-        expect_and_dismiss_toaster(message: "Successful update.")
+        expect_and_dismiss_flash(message: "Successful update.")
 
         wp_table.visit_query query
 

@@ -5,6 +5,7 @@ LABEL maintainer="operations@openproject.com"
 ARG BUNDLER_VERSION="2.5.13"
 ARG NODE_VERSION="20.9.0"
 ARG BIM_SUPPORT=true
+ENV USE_JEMALLOC=false
 ENV DEBIAN_FRONTEND=noninteractive
 ENV BUNDLE_JOBS=8
 ENV BUNDLE_RETRY=3
@@ -36,9 +37,9 @@ ENV OPENPROJECT_ATTACHMENTS__STORAGE__PATH=$APP_DATA_PATH/files
 ENV OPENPROJECT_RAILS__CACHE__STORE=file_store
 ENV OPENPROJECT_ANGULAR_UGLIFY=true
 
-RUN useradd -d /home/$APP_USER -m $APP_USER
-RUN mkdir -p $APP_PATH && chown $APP_USER:$APP_USER $APP_PATH
-RUN mkdir -p $APP_DATA_PATH && chown $APP_USER:$APP_USER $APP_DATA_PATH && chmod g+rwx $APP_DATA_PATH
+RUN useradd -d /home/$APP_USER -m $APP_USER && \
+  mkdir -p $APP_PATH && chown $APP_USER:$APP_USER $APP_PATH && \
+  mkdir -p $APP_DATA_PATH && chown $APP_USER:$APP_USER $APP_DATA_PATH && chmod g+rwx $APP_DATA_PATH
 
 WORKDIR $APP_PATH
 
@@ -70,13 +71,11 @@ RUN \
 COPY . .
 
 # Copy lock file again as the updated version was overriden by COPY just now
-RUN cp Gemfile.lock.bak Gemfile.lock && rm Gemfile.lock.bak
-
-RUN ./docker/prod/setup/precompile-assets.sh
-RUN ./docker/prod/setup/postinstall-common.sh
-
-RUN cp ./config/database.production.yml config/database.yml
-RUN ln -s $APP_PATH/docker/prod/setup/.irbrc /home/$APP_USER/
+RUN cp Gemfile.lock.bak Gemfile.lock && rm Gemfile.lock.bak && \
+  ./docker/prod/setup/precompile-assets.sh && \
+  ./docker/prod/setup/postinstall-common.sh && \
+  cp ./config/database.production.yml config/database.yml && \
+  ln -s $APP_PATH/docker/prod/setup/.irbrc /home/$APP_USER/
 
 # -------------------------------------
 # slim (public)
@@ -86,6 +85,7 @@ FROM base as slim
 USER $APP_USER
 EXPOSE 8080
 CMD ["./docker/prod/web"]
+ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
 VOLUME ["$APP_DATA_PATH"]
 
 # -------------------------------------
@@ -98,9 +98,8 @@ ENV DATABASE_URL=postgres://openproject:openproject@127.0.0.1/openproject
 ENV PGDATA=/var/openproject/pgdata
 ENV GOSU_VERSION="1.17"
 
-RUN ./docker/prod/setup/postinstall-onprem.sh
-
-RUN ln -s /app/docker/prod/setup/.irbrc /root/
+RUN ./docker/prod/setup/postinstall-onprem.sh && \
+  ln -s /app/docker/prod/setup/.irbrc /root/
 
 # Expose ports for apache and postgres
 EXPOSE 80

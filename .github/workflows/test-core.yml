@@ -1,6 +1,7 @@
 name: "Test suite"
 # https://securitylab.github.com/research/github-actions-preventing-pwn-requests
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
@@ -27,6 +28,7 @@ jobs:
       labels:
         - runs-on
         - runner=32cpu-linux-x64
+        - family=m7
         - run-id=${{ github.run_id }}
     timeout-minutes: 40
     env:

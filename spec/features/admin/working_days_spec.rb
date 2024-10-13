@@ -101,7 +101,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
         dialog.confirm
       end
 
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.")
+      expect_flash(message: "Successful update.")
       expect(page).to have_unchecked_field "Monday"
       expect(page).to have_unchecked_field "Friday"
       expect(page).to have_unchecked_field "Saturday"
@@ -141,8 +141,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
         dialog.confirm
       end
 
-      expect(page).to have_css(".op-toast.-error",
-                               text: "At least one day of the week must be defined as a working day.")
+      expect_flash(type: :error, message: "At least one day of the week must be defined as a working day.")
       # Restore the checkboxes to their valid state
       expect(page).to have_checked_field "Monday"
       expect(page).to have_checked_field "Tuesday"
@@ -172,8 +171,8 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       # Not executing the background jobs
       dialog.confirm
 
-      expect(page).to have_css(".op-toast.-error",
-                               text: "The previous changes to the working days configuration have not been applied yet.")
+      expect_flash(type: :error,
+                   message: "The previous changes to the working days configuration have not been applied yet.")
     end
   end
 
@@ -187,11 +186,11 @@ RSpec.describe "Working Days", :js, :with_cuprite do
     end
 
     it "can add non-working days" do
-      # Initial loading can sometimes take a while
       datepicker.open_modal!
 
       # Check if a date is correctly highlighted after selecting it in different time zones
       datepicker.select_day 5
+      expect(datepicker).to have_day_selected("5")
 
       # It can cancel and reopen
       within_test_selector("op-datepicker-modal") do
@@ -230,7 +229,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       click_on "Apply changes"
       click_on "Save and reschedule"
 
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.")
+      expect_flash(message: "Successful update.")
 
       nwd1 = NonWorkingDay.find_by(name: "My holiday")
       expect(nwd1.date).to eq date1
@@ -310,6 +309,6 @@ RSpec.describe "Working Days", :js, :with_cuprite do
     click_on "Apply changes"
 
     # No dialog and saved successfully
-    expect(page).to have_css(".op-toast.-success")
+    expect_flash(message: "Successful update.")
   end
 end

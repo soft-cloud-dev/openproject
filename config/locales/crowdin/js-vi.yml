@@ -66,7 +66,7 @@ vi:
     button_back_to_list_view: "Quay lại chế độ xem danh sách"
     button_cancel: "Hủy"
     button_close: "Đóng"
-    button_change_project: "Move to another project"
+    button_change_project: "Chuyển sang dự án khác"
     button_check_all: "Chọn tất cả"
     button_configure-form: "Cấu hình biểu mẫu"
     button_confirm: "Xác nhận"
@@ -74,7 +74,7 @@ vi:
     button_copy: "Sao chép"
     button_copy_to_clipboard: "Sao chép vào clipboard"
     button_copy_link_to_clipboard: "Sao chép liên kết vào clipboard"
-    button_copy_to_other_project: "Duplicate to other project"
+    button_copy_to_other_project: "Sao chép trong một dự án khác"
     button_custom-fields: "Trường tùy chỉnh"
     button_delete: "Xóa"
     button_delete_watcher: "Xóa người theo dõi"
@@ -138,6 +138,8 @@ vi:
     description_select_work_package: "Chọn công việc #%{id}"
     description_subwork_package: "Con của công việc #%{id}"
     editor:
+      revisions: "Hiển thị các sửa đổi cục bộ"
+      no_revisions: "Không tìm thấy sửa đổi cục bộ"
       preview: "Chuyển đổi chế độ xem trước"
       source_code: "Chuyển đổi chế độ mã Markdown"
       error_saving_failed: "Lưu tài liệu không thành công với lỗi sau: %{error}"
@@ -277,7 +279,7 @@ vi:
           Bạn có chắc chắn muốn tiếp tục không?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
-          Thay đổi chế độ tính toán tiến độ từ dựa trên trạng thái sang dựa trên công việc sẽ làm cho <i>% Hoàn thành</i> trở thành trường không thể chỉnh sửa, giá trị của nó được lấy từ <i>Công việc</i> và <i>Công việc còn lại</i>. Các giá trị hiện tại cho <i>% Hoàn thành</i> sẽ được giữ lại. Nếu các giá trị cho <i>Công việc</i> và <i>Công việc còn lại</i> không có, chúng sẽ được yêu cầu để thay đổi <i>% Hoàn thành</i>.
+          Thay đổi chế độ tính toán tiến độ từ dựa trên trạng thái sang dựa trên công việc sẽ làm cho trường <i>% Hoàn thành</i> có thể chỉnh sửa tự do. Nếu bạn tùy ý nhập giá trị cho <i>Công việc</i> hoặc <i>Công việc còn lại</i>, chúng cũng sẽ được liên kết với <i>% Hoàn thành</i>. Thay đổi <i>Công việc còn lại</i> sau đó có thể cập nhật <i>% Hoàn thành</i>.
         warning_progress_calculation_mode_change_from_field_to_status_html: >-
           Thay đổi chế độ tính toán tiến độ từ dựa trên công việc sang dựa trên trạng thái sẽ dẫn đến việc tất cả các giá trị hiện tại của <i>% Hoàn thành</i> bị mất và thay thế bằng các giá trị liên kết với từng trạng thái. Các giá trị hiện tại cho <i>Công việc còn lại</i> cũng có thể được tính lại để phản ánh sự thay đổi này. Hành động này không thể hoàn tác.
     custom_actions:
@@ -336,18 +338,6 @@ vi:
         years: "Năm"
         description: >
           Chọn mức độ phóng to ban đầu sẽ được hiển thị khi tự động phóng to không khả dụng.
-      export:
-        title: "Tùy chọn PDF biểu đồ Gantt"
-        button_export: "Xuất"
-        column_widths:
-          narrow: "Hẹp"
-          medium: "Vừa phải"
-          wide: "Rộng"
-          very_wide: "Rất rộng"
-        options:
-          date_zoom: "Phóng to theo ngày"
-          paper_size: "Kích thước giấy"
-          column_widths: "Chiều rộng cột"
     general_text_no: "không"
     general_text_yes: "có"
     general_text_No: "Không"
@@ -366,10 +356,10 @@ vi:
           learn_about: "Tìm hiểu thêm về các tính năng mới"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_4":
+          "14_6":
             standard:
               new_features_html: >
-                Bản phát hành bao gồm nhiều tính năng và cải tiến mới, chẳng hạn như: <br> <ul class="%{list_styling_class}"> <li>Tùy chọn chế độ tối trong cài đặt cá nhân</li> <li>Quyền riêng biệt để xem và chỉnh sửa trên các thuộc tính của dự án</li> <li>Cải thiện báo cáo tiến độ dựa trên trạng thái</li> <li>Xác thực kết nối cho kho lưu trữ Nextcloud</li> <li>Nhiều tùy chọn bộ lọc hơn cho danh sách dự án</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Benefit from more flexible progress reporting – thanks to user feedback.</li> <li>Receive an update notification with reload option for meetings.</li> <li>Enable a custom field for multiple projects at once.</li> <li>Use relative work package attribute macros.</li> <li>Show empty lines in saved rich text.</li> <li>See past meetings included in the number next to the Meetings tab.</li> </ul>
     ical_sharing_modal:
       title: "Đăng ký lịch"
       inital_setup_error_message: "Đã xảy ra lỗi khi lấy dữ liệu."
@@ -410,6 +400,7 @@ vi:
     label_create: "Tạo"
     label_create_work_package: "Tạo gói công việc mới"
     label_created_by: "Được tạo bởi"
+    label_current: "hiện tại"
     label_date: "Ngày"
     label_date_with_format: "Nhập %{date_attribute} theo định dạng sau: %{format}"
     label_deactivate: "Hủy kích hoạt"
@@ -619,7 +610,9 @@ vi:
         mentioned: "nhắc đến"
         watched: "người theo dõi"
         assigned: "người được giao"
-        accountable: "Có trách nhiệm"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "Accountable"
         created: "được tạo"
         scheduled: "được lên lịch"
         commented: "bình luận"
@@ -647,7 +640,7 @@ vi:
           with_current_filter: "Hiện không có thông báo trong chế độ xem này"
         mark_all_read: "Đánh dấu tất cả là đã đọc"
         mark_as_read: "Đánh dấu là đã đọc"
-        text_update_date_by: "%{date} by"
+        text_update_date_by: "%{date} bởi"
         total_count_warning: "Hiển thị %{newest_count} thông báo gần đây nhất. %{more_count} thông báo khác chưa được hiển thị."
         empty_state:
           no_notification: "Có vẻ như bạn đã đọc hết các thông báo."
@@ -1191,6 +1184,8 @@ vi:
         one: "1 ngày"
         other: "%{count} ngày"
         zero: "0 ngày"
+      word:
+        other: "%{count} từ"
     zen_mode:
       button_activate: "Kích hoạt chế độ Zen"
       button_deactivate: "Tắt chế độ Zen"

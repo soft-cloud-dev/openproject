@@ -31,6 +31,9 @@ lt:
     custom_styles:
       color_theme: "Spalvų tema"
       color_theme_custom: "(Pasirinktinis)"
+      tab_interface: "Interface"
+      tab_branding: "Branding"
+      tab_pdf_export_styles: "PDF export styles"
       colors:
         primary-button-color: "Pagrindinis mygtukas"
         accent-color: "Akcentas"
@@ -79,6 +82,7 @@ lt:
         contact: "Susisiekite su mumis dėl demonstracijos"
       enterprise_info_html: "yra Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'> priedas."
       upgrade_info: "Prašome atsinaujinti į mokamą planą, kad aktyvuotumėte ir pradėtumėte ji naudoti savo komandoje."
+    jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
       explanation:
         text: "Visi atskiri naudotojo veiksmai (t.y. darbų paketo atnaujinimas du kartus) yra sugrupuojami į vieną veiksmą, jei laiko tarpas tarp jų yra mažesnis už šį nustatymą. Programoje jie bus rodomi kaip vienas veiksmas. Tiek pat bus pavėlinti ir pranešimai. Dėl to sumažės siunčiamų el.laiškų skaičius ir taipogi įtakos %{webhook_link} delsimą."
@@ -199,6 +203,17 @@ lt:
       title: "Pasirinktiniai veiksmai"
       description: "Savo veiksmai yra vieno paspaudimo kombinacijos, leidžiančios nustatyti veiksmus, kuriuos galite padaryti preinamais kai kuriuose darbo paketuose pagal jų būseną, rolę, tipą ar projektą."
   custom_fields:
+    admin:
+      custom_field_projects:
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This custom field is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+      items:
+        blankslate:
+          title: "Your list of items is empty"
+          description: "Start by adding items to the custom field of type hierarchy. Each item can be used to create a hierarchy bellow it. To navigate and create sub-items inside a hierarchy click on the created item."
+      notice:
+        remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
     text_add_new_custom_field: >
       Norėdami pridėti naujus pritaikytus laukelius prie projekto, pirmiausia reikia juos sukurti. Tik tada yra galimybė juos pridėti prie šio projekto.
     is_enabled_globally: "Yra įgalintas globaliai"
@@ -261,13 +276,16 @@ lt:
       open_as_gantt: "Atidaryti kaip Gantt diagramą"
       no_results_title_text: Nėra jokių projektų
       no_results_content_text: Sukurti naują projektą
+      search:
+        label: Project name filter
+        placeholder: Search by project name
     lists:
       active: "Aktyvūs projektai"
       my: "Mano projektai"
       favored: "Mėgstami projektai"
       archived: "Archyvuoti projektai"
       shared: "Shared project lists"
-      my_lists: "My project lists"
+      my_lists: "Mano projektų sąrašai"
       new:
         placeholder: "Naujas projektų sąrašas"
       delete_modal:
@@ -294,7 +312,7 @@ lt:
         actions:
           label_enable_single: "Aktyvus šiame projekte, spauskite, jei norite išjungti"
           label_disable_single: "Neakvyus šiame projekte, spauskite, jei norite įjungti"
-          deactivate_for_project: "Deactivate for this project"
+          remove_from_project: "Pašalinti iš projekto"
           label_enable_all: "Įjungti visus"
           label_disable_all: "Išjungti visus"
         is_required_blank_slate:
@@ -470,17 +488,21 @@ lt:
       no_results_content_text: Pridėti būklės ataskaitą
   statuses:
     edit:
+      status_color_text: |
+        Spauskite, kad priskirtumėte arba pakeistumėte šios būsenos spalvą.
+        Ji rodoma būsenos mygtuke arba gali būti naudojama paryškinti darbo paketus lentelėje.
+      status_excluded_from_totals_text: |-
+        Check this option to exclude work packages with this status from totals of Work,
+        Remaining work, and % Complete in a hierarchy.
+      status_percent_complete_text: |-
+        In <a href="%{href}">status-based progress calculation mode</a>, the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         Pažymėkite čia, jei norite, kad darbų paketai šioje būsenoje būtų tik skaitomi.
         Nebebus galima keisti jokių atributų išskyrus būseną.
         <br/>
         <strong>Pastaba:</strong> paveldėti atributai (pvz., iš vaikų ar sąryšių) gali būti keičiami automatiškai.
-      status_excluded_from_totals_text: |-
-        Check this option to exclude work packages with this status from totals of Work,
-        Remaining work, and % Complete in a hierarchy.
-      status_color_text: |
-        Spauskite, kad priskirtumėte arba pakeistumėte šios būsenos spalvą.
-        Ji rodoma būsenos mygtuke arba gali būti naudojama paryškinti darbo paketus lentelėje.
     index:
       no_results_title_text: Nėra jokių darbų paketo būsenų.
       no_results_content_text: Pridėti naują būseną
@@ -490,7 +512,7 @@ lt:
         is_readonly: "Tik skaityti"
         excluded_from_totals: "Excluded from totals"
   themes:
-    dark: "Dark (Beta)"
+    dark: "Tamsus (Beta versija)"
     light: "Šviesi"
     light_high_contrast: "Šviesi kontrastinga"
   types:
@@ -535,7 +557,7 @@ lt:
       could_not_be_saved: "Nepavyko įrašyti šių darbo paketų:"
       none_could_be_saved: "Ne visus iš %{total} darbo paketų pavyko pakeisti."
       x_out_of_y_could_be_saved: "%{failing} iš %{total} darbo paketų nepavyko atnaujinti, o %{success} - pavyko."
-      selected_because_descendants: "Nors %{selected} darbo paketai buvo pažymėti, iš viso %{total} darbo paketai įtakoti, įskaitant ir palikuonis."
+      selected_because_descendants: "While %{selected} work packages were selected, in total %{total} work packages are affected which includes descendants."
       descendant: "pažymėto palikuonis"
     move:
       no_common_statuses_exists: "Parinkti darbo paketai neturi būsenos. Jų būsena negali pakeista."
@@ -625,6 +647,7 @@ lt:
         editable: "Galimas redaguoti"
         field_format: "Formatas"
         is_filter: "Naudojamas kaip filtras"
+        is_for_all: "For all projects"
         is_required: "Būtinas"
         max_length: "Maksimalus ilgis"
         min_length: "Minimalus ilgis"
@@ -639,6 +662,8 @@ lt:
         uid: "Kliento ID"
         secret: "Kliento paslaptis"
         owner: "Savininkas"
+        builtin: "Builtin"
+        enabled: "Active"
         redirect_uri: "Peradresavimo URI"
         client_credentials_user_id: "Kliento įgaliojimų naudotojo ID"
         scopes: "Apimtys"
@@ -810,6 +835,7 @@ lt:
         blank: "negali būti tuščia."
         blank_nested: "reikalauja, kad savybė '%{property}' būtų nustatyta."
         cannot_delete_mapping: "is required. Cannot be deleted."
+        is_for_all_cannot_modify: "is for all projects and can therefore not be modified."
         cant_link_a_work_package_with_a_descendant: "Darbų paketas negali būti susietas su viena iš savo vidinių užduočių."
         circular_dependency: "Šis ryšys sukurtų ciklinę priklausomybę."
         confirmation: "nesutampa su %{attribute}."
@@ -883,6 +909,10 @@ lt:
               minimum: "turite įtraukti bent vieną nario, konteksto ar id filtrą su „=“ operatoriumi."
         custom_field:
           at_least_one_custom_option: "Turi būti prieinama bent viena savybė."
+        custom_fields_project:
+          attributes:
+            project_ids:
+              blank: "Please select a project."
         custom_actions:
           only_one_allowed: "leidžiama (%{name}) tik viena reikšmė."
           empty: "(%{name}) reikšmė negali būti tuščia."
@@ -913,6 +943,8 @@ lt:
             name:
               blank: "yra privalomas. Prašome pasirinkti pavadinimą."
               not_unique: "jau naudojamas. Prašome pasirinkti kitą pavadinimą."
+        meeting:
+          error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
         notifications:
           at_least_one_channel: "Turi būti nurodytas bent vienas kanalas pranešimų siuntimui."
           attributes:
@@ -1048,10 +1080,10 @@ lt:
             assigned_to:
               format: "%{message}"
             done_ratio:
-              does_not_match_work_and_remaining_work: "does not match work and remaining work"
-              cannot_be_set_when_work_is_zero: "cannot be set when work is zero"
-              must_be_set_when_remaining_work_is_set: "Privaloma, kai nustatytas likęs darbas."
-              must_be_set_when_work_and_remaining_work_are_set: "Required when Work and Remaining work are set."
+              does_not_match_work_and_remaining_work: "does not match Work and Remaining work"
+              cannot_be_set_when_work_is_zero: "cannot be set when Work is 0h"
+              must_be_set_when_remaining_work_is_set: "required when Remaining work is set."
+              must_be_set_when_work_and_remaining_work_are_set: "required when Work and Remaining work are set."
               inclusion: "must be between 0 and 100."
             due_date:
               not_start_date: "nėra pradžios data, nors tai reikalinga svarbiems etapams."
@@ -1081,15 +1113,17 @@ lt:
               does_not_exist: "Nurodyta kategorija neegzistuoja."
             estimated_hours:
               not_a_number: "is not a valid duration."
-              cant_be_inferior_to_remaining_work: "Negali būti mažesnis už likusį darbą."
-              must_be_set_when_remaining_work_and_percent_complete_are_set: "Required when Remaining work and % Complete are set."
-              format: "%{message}"
+              cant_be_inferior_to_remaining_work: "cannot be lower than Remaining work."
+              must_be_set_when_remaining_work_and_percent_complete_are_set: "required when Remaining work and % Complete are set."
             remaining_hours:
               not_a_number: "is not a valid duration."
-              cant_exceed_work: "Negali būdi daugiau nei Darbas."
-              must_be_set_when_work_is_set: "Privaloma, kai nustatytas Darbas."
-              must_be_set_when_work_and_percent_complete_are_set: "Required when Work and % Complete are set."
-              format: "%{message}"
+              cant_exceed_work: "cannot be higher than Work."
+              must_be_set_when_work_is_set: "required when Work is set."
+              must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
+              must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
+                must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Darbo paketas yra tik skaitymo būsenoje, taigi jo atributų keisti negalima."
         type:
           attributes:
@@ -1108,7 +1142,7 @@ lt:
               confirmation: "Slaptažodžio patvirtinimas nesutampa su įvestu slaptažodžiu."
               format: "%{message}"
             password:
-              weak: "Turi turėti simbolius iš šitų klasių (mažiausiai %{min_count} iš %{all_count}): %{rules}."
+              weak: "Must contain characters of the following classes (at least %{min_count} of %{all_count}): %{rules}"
               lowercase: "mažosios raidės (pvz., „a“)"
               uppercase: "didžiosios raidės (pvz., „A“)"
               numeric: "skaitinė reikšmė (pvz., „1“)"
@@ -1370,6 +1404,7 @@ lt:
   button_expand_all: "Išskleisti visus"
   button_favorite: "Pridėti prie mėgstamų"
   button_filter: "Filtras"
+  button_finish_setup: "Finish setup"
   button_generate: "Generuoti"
   button_list: "Sąrašas"
   button_lock: "Užrakinti"
@@ -1422,8 +1457,8 @@ lt:
     failure_message: Sutikimas negautas. Tęsti negalima.
     title: Naudotojo sutikimas
     decline_warning_message: Jūs nesutikote su sąlygomis, todėl buvote atjungtas nuo sistemos.
-    user_has_consented: Naudotojas sutiko su jūsų sukonfigūruotu teiginiu nurodytu metu.
-    not_yet_consented: Naudotojas dar nesutiko, jo bus paklausta kito prisijungimo metu.
+    user_has_consented: The user gave their consent to your [configured consent information text](consent_settings).
+    not_yet_consented: The user has not yet given their consent to your [configured consent information text](consent_settings). They will be reminded the next time they log in.
     contact_mail_instructions: Nurodyti pašto adresą, kuriuo naudotojai gali pasiekti duomenų valdytoją, kad prašytų duomenų pakeitimo ar pašalinimo.
     contact_your_administrator: Prašome susisiekti su jūsų administratoriumi, jei norite, kad jūsų paskyra būtų ištrinta.
     contact_this_mail_address: Prašome rašyti adresu %{mail_address}, jei norite, kad jūsų paskyra būtų ištrinta.
@@ -1692,7 +1727,7 @@ lt:
   error_menu_item_not_saved: Meniu punktas negali būti išsaugotas
   error_wiki_root_menu_item_conflict: >
     Negalima pervadinti „%{old_name}“ į „%{new_name}“ dėl konflikto su esamu meniu punktu „%{existing_caption}“ (%{existing_identifier}).
-  error_external_authentication_failed: "Įvyko klaida vykstant išorinei autentifikacijai. Bandykite dar kartą."
+  error_external_authentication_failed_message: "An error occurred during external authentication: %{message}"
   error_attribute_not_highlightable: "Atributai, kurių negalima paryškinti: %{attributes}"
   events:
     changeset: "Pakeitimų paketas redaguotas"
@@ -1711,9 +1746,71 @@ lt:
       project: "Projektas: %{name}"
       subproject: "Subprojektas: %{name}"
   export:
-    your_work_packages_export: "Jūsų darbo užduočių eksportas"
-    succeeded: "Eksportas baigtas sėkmingai."
-    failed: "Eksportas nepavyko: %{message}"
+    dialog:
+      title: "Export"
+      submit: "Export"
+      format:
+        label: "File format"
+        options:
+          csv:
+            label: "CSV"
+          pdf:
+            label: "PDF"
+          xls:
+            label: "XLS"
+      columns:
+        input_label_report: "Add columns to attribute table"
+        input_caption_report: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in the attribute table, but can be displayed below it."
+        input_caption_table: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in table based exports."
+      pdf:
+        export_type:
+          label: "PDF export type"
+          options:
+            table:
+              label: "Table"
+              caption: "Export the work packages list in a table with the desired columns."
+            report:
+              label: "Report"
+              caption: "Export the work package on a detailed report of all work packages in the list."
+            gantt:
+              label: "Gantt chart"
+              caption: "Export the work packages list in a Gantt diagram view."
+        include_images:
+          label: "Include images"
+          caption: "Exclude images to reduce the size of the PDF export."
+        gantt_zoom_levels:
+          label: "Zoom levels"
+          caption: "Select what is the zoom level for dates displayed in the chart."
+          options:
+            days: "Days"
+            weeks: "Weeks"
+            months: "Months"
+            quarters: "Quarters"
+        column_width:
+          label: "Table column width"
+          options:
+            narrow: "Narrow"
+            medium: "Medium"
+            wide: "Wide"
+            very_wide: "Very wide"
+        paper_size:
+          label: "Paper size"
+          caption: "Depending on the chart size more than one page might be exported."
+        long_text_fields:
+          input_caption: "By default all long text fields are selected."
+          input_label: "Add long text fields"
+          input_placeholder: "Search for long text fields"
+          drag_area_label: "Manage long text fields"
+      xls:
+        include_relations:
+          label: "Include relations"
+          caption: "This option will create a duplicate of each work package for every relation this has with another work package."
+        include_descriptions:
+          label: "Include descriptions"
+          caption: "This option will add a description column in raw format."
+    your_work_packages_export: "Work packages are being exported"
+    succeeded: "Export completed"
+    failed: "An error has occurred while trying to export the work packages: %{message}"
     format:
       atom: "Atom"
       csv: "CSV"
@@ -1785,6 +1882,8 @@ lt:
       progress_mode_changed_to_status_based: "Eigos skaičiavimas atnaujintas"
       status_changed: "Status '%{status_name}'"
       system_update: "OpenProject sistemos atnaujinimas"
+      total_percent_complete_mode_changed_to_work_weighted_average: "Calculation of % Complete totals now weighted by Work."
+      total_percent_complete_mode_changed_to_simple_average: "Calculation of % Complete totals now based on a simple average of only % Complete values."
     cause_descriptions:
       work_package_predecessor_changed_times: dėl pirmtako pakeitimų %{link}
       work_package_parent_changed_times: dėl tėvo pakeitimų %{link}
@@ -1802,7 +1901,7 @@ lt:
       progress_mode_changed_to_status_based: Nustatytas eigos skaičiavimo režimas priklausantis-nuo-būsenos
       status_excluded_from_totals_set_to_false_message: now included in hierarchy totals
       status_excluded_from_totals_set_to_true_message: now excluded from hierarchy totals
-      status_percent_complete_changed: "% complete changed from %{old_value}% to %{new_value}%"
+      status_percent_complete_changed: "% Complete changed from %{old_value}% to %{new_value}%"
       system_update:
         file_links_journal: >
           Nuo dabar, su failų nuorodomis (failais, saugomais išorinse saugyklose) susiję veiksmai bus rodomi Veiksmų kortelėje. Žemiau pateikiamas jau egzistavusių nuorodų veiksmų sąrašas:
@@ -1812,6 +1911,10 @@ lt:
           Eigos skaičiavimas automatiškai <a href="%{href}" target="_blank">pakeistas su versijos atnaujinimu</a>.
         totals_removed_from_childless_work_packages: >-
           Darbo ir eigos sumos automatiškai išimtos ne tėviniams darbų paketams <a href="%{href}" target="_blank">atnaujinant versiją</a>. Tai palaikymo užduotis ir ją galima saugiai ignoruoti.
+      total_percent_complete_mode_changed_to_work_weighted_average: >-
+        Child work packages without Work are ignored.
+      total_percent_complete_mode_changed_to_simple_average: >-
+        Work values of child work packages are ignored.
   links:
     configuration_guide: "Konfigūravimo vadovas"
     get_in_touch: "Turite klausimų? Susisiekite su mumis."
@@ -1911,7 +2014,8 @@ lt:
   label_additional_workflow_transitions_for_assignee: "Papildomi darbų eigos variantai leistini, kai darbas paskirtas vartotojui"
   label_additional_workflow_transitions_for_author: "Papildomi darbų eigos variantai leistini, kai vartotojas yra autorius"
   label_administration: "Administravimas"
-  label_advanced_settings: "Išplėstiniai nustatymai"
+  label_interface_colors: "Interface colors"
+  label_interface_colors_description: "These colors control how the application looks. If you modify them the theme will automatically be changed to Custom theme, but we can’t assure the compliance of the accessibility contrast minimums (WCAG 2.1). "
   label_age: "Amžius"
   label_ago: "dienų prieš"
   label_all: "visi"
@@ -1944,6 +2048,7 @@ lt:
   label_attribute_expand_text: "Pilnas tekstas, skirtas „%{attribute}“"
   label_authentication: "Autentifikacija"
   label_authentication_settings: "Authentication settings"
+  label_available_custom_fields_projects: "Available custom fields projects"
   label_available_global_roles: "Galimi globalūs vaidmenys"
   label_available_project_attributes: "Galimi projekto atributai"
   label_available_project_forums: "Galimi forumai"
@@ -1973,6 +2078,7 @@ lt:
   label_calendars_and_dates: "Kalendoriai ir datos"
   label_calendar_show: "Rodyti kalendorių"
   label_category: "Kategorija"
+  label_completed: Completed
   label_consent_settings: "Naudotojo sutikimas"
   label_wiki_menu_item: Wiki meniu punktas
   label_select_main_menu_item: Pasirinkti naują pagrindinio meniu punktą
@@ -2016,6 +2122,7 @@ lt:
   label_copy_project: "Kopijuoti projektą"
   label_core_version: "Branduolio versija"
   label_core_build: "Branduolio versija"
+  label_created_by: "Created by %{user}"
   label_current_status: "Dabartinė būsena"
   label_current_version: "Esama versija"
   label_custom_field_add_no_type: "Pridėti šį laukelį prie darbų paketo tipo"
@@ -2023,6 +2130,7 @@ lt:
   label_custom_field_plural: "Pritaikyti laukai"
   label_custom_field_default_type: "Tuščias tipas"
   label_custom_style: "Išvaizda"
+  label_custom_style_description: "Choose how OpenProject looks to you with themes, select your default colors to use in the app and how exports look like."
   label_dashboard: "Skydelis"
   label_database_version: "PostgreSQL versija"
   label_date: "Data"
@@ -2119,6 +2227,7 @@ lt:
   label_here: čia
   label_hide: "Paslėpti"
   label_history: "Istorija"
+  label_hierarchy: "Hierarchy"
   label_hierarchy_leaf: "Hierarchijos lapas"
   label_home: "Namai"
   label_subject_or_id: "Tema arba ID"
@@ -2130,6 +2239,7 @@ lt:
   label_inactive: "Neaktyvus"
   label_incoming_emails: "Gauti el. laiškai"
   label_includes: "turi savyje"
+  label_incomplete: Incomplete
   label_include_sub_projects: Include sub-projects
   label_index_by_date: "Rūšiuoti pagal datą"
   label_index_by_title: "Rūšiuoti pagal pavadinimą"
@@ -2140,12 +2250,14 @@ lt:
   label_internal: "Vidinis"
   label_introduction_video: "Įvado video"
   label_invite_user: "Pakviesti vartotoją"
+  label_item: "Item"
+  label_item_plural: "Items"
   label_share: "Dalintis"
   label_share_project_list: "Share project list"
   label_share_work_package: "Dalintis darbo paketu"
-  label_show_hide: "Rodyti/slėpti"
-  label_show_hide_n_items: "Show/hide %{count} items"
   label_show_all_registered_users: "Rodyti visus registruotus vartotojus"
+  label_show_less: "Show less"
+  label_show_more: "Show more"
   label_journal: "Žurnalas"
   label_journal_diff: "Aprašymų palyginimas"
   label_language: "Kalba"
@@ -2216,7 +2328,7 @@ lt:
   label_more: "Daugiau"
   label_more_than_ago: "daugiau nei prieš dieną"
   label_move_work_package: "Perkelti darbų paketą"
-  label_my_account: "Mano paskyra"
+  label_my_account: "Account settings"
   label_my_activity: "Mano veikla"
   label_my_account_data: "Mano paskyros duomenys"
   label_my_avatar: "Mano avataras"
@@ -2243,6 +2355,7 @@ lt:
   label_no_parent_page: "Nėra tėvinio puslapio"
   label_nothing_display: "Nėra ką rodyti"
   label_nobody: "niekas"
+  label_not_configured: "Not configured"
   label_not_found: "nerasta"
   label_none: "joks"
   label_none_parentheses: "(nėra)"
@@ -2295,6 +2408,7 @@ lt:
   label_product_version: "Produkto versija"
   label_profile: "Profilis"
   label_percent_complete: "% baigta"
+  label_progress_tracking: "Progress tracking"
   label_project: "Projektas"
   label_project_activity: "Projekto aktyvumas"
   label_project_attribute_plural: "Projekto atributai"
@@ -2364,6 +2478,8 @@ lt:
   label_role_plural: "Vaidmenys"
   label_role_search: "Priskirti vaidmenį naujiems nariams"
   label_scm: "SCM"
+  label_scroll_left: "Scroll left"
+  label_scroll_right: "Scroll right"
   label_search: "Paieška"
   label_search_by_name: "Search by name"
   label_send_information: "Siųsti naujus prisijungimo duomenis naudotojui"
@@ -2478,7 +2594,6 @@ lt:
   label_work_package_new: "Naujas darbų paketas"
   label_work_package_edit: "Redaguoti darbų paketą %{name}"
   label_work_package_plural: "Darbų paketai"
-  label_work_packages_settings: "Work packages settings"
   label_work_package_status: "Darbų paketo būsena"
   label_work_package_status_new: "Nauja būsena"
   label_work_package_status_plural: "Darbų paketo būsenos"
@@ -2869,6 +2984,7 @@ lt:
   permission_view_shared_work_packages: "Žiūrėti darbo paketo bendrinimus"
   permission_view_time_entries: "Peržiūrėti dirbtą laiką"
   permission_view_timelines: "Peržiūrėti laiko juostas"
+  permission_view_user_email: "View users' mail addresses"
   permission_view_wiki_edits: "Peržiūrėti wiki istoriją"
   permission_view_wiki_pages: "Peržiūrėti wiki"
   permission_work_package_assigned: "Tapti paskirtuoju/atsakinguoju"
@@ -3117,11 +3233,15 @@ lt:
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
   setting_invitation_expiration_days: "Aktyvavimo laiško galiojimas baigiasi po"
-  setting_work_package_done_ratio: "Eigos skaičiavimas"
+  setting_work_package_done_ratio: "Progress calculation mode"
   setting_work_package_done_ratio_field: "Pagal-darbą"
+  setting_work_package_done_ratio_field_caption_html: >-
+    <i>% Complete</i> can be freely set to any value. If you optionally enter a value for <i>Work</i>, <i>Remaining work</i> will automatically be derived.
   setting_work_package_done_ratio_status: "Pagal-būseną"
+  setting_work_package_done_ratio_status_caption_html: >-
+    Each status has a <i>% Complete</i> value associated with it. Changing status will change <i>% Complete</i>.
   setting_work_package_done_ratio_explanation_html: >
-    Režime <b>pagal-darbą</b>, pabaigimo % skaičiuojami pagal tai, kiek darbo atlikta lyginant su visu darbo kiekiu. Režime <b>pagal-būseną</b>, kiekvienas būsenas turi savo susijusią baigtumo % reikšmę. Pakeitus būseną pasikeis ir % baigta.
+    In <b>work-based</b> mode, % Complete can be freely set to any value. If you optionally enter a value for Work, Remaining work will automatically be derived. In <b>status-based</b> mode, each status has a % Complete value associated with it. Changing status will change % Complete.
   setting_work_package_properties: "Darbų paketo ypatybės"
   setting_work_package_startdate_is_adddate: "Naudoti dabartinę datą kaip naujų darbų paketų pradžios datą"
   setting_work_packages_projects_export_limit: "Darbo paketų / Projektų eksporto limitas"
@@ -3140,6 +3260,13 @@ lt:
   setting_password_min_length: "Minimalus ilgis"
   setting_password_min_adhered_rules: "Minimalus reikalingų klasių skaičius"
   setting_per_page_options: "Įrašų puslapyje nustatymai"
+  setting_percent_complete_on_status_closed: "% Complete when status is closed"
+  setting_percent_complete_on_status_closed_no_change: "No change"
+  setting_percent_complete_on_status_closed_no_change_caption_html: >-
+    The value of <i>% Complete</i> will not change even when a work package is closed.
+  setting_percent_complete_on_status_closed_set_100p: "Automatically set to 100%"
+  setting_percent_complete_on_status_closed_set_100p_caption: >-
+    A closed work package is considered complete.
   setting_plain_text_mail: "Tik tekstas laiške (be HTML)"
   setting_protocol: "Protokolas"
   setting_project_gantt_query: "Projektų portfelio Gantt diagrama"
@@ -3164,6 +3291,13 @@ lt:
   setting_sys_api_enabled: "Įgalinti repozitorijos valdymo web tarnybą"
   setting_sys_api_description: "Repozitorijos valdymo web tarnyba teikia integraciją ir vartotojų autorizaciją bandant pasiekti repozitorijas."
   setting_time_format: "Laikas"
+  setting_total_percent_complete_mode: "Calculation of % Complete hierarchy totals"
+  setting_total_percent_complete_mode_work_weighted_average: "Weighted by work"
+  setting_total_percent_complete_mode_work_weighted_average_caption_html: >-
+    The <i>total % Complete</i> will be weighted against the <i>Work</i> of each work package in the hierarchy. Work packages without <i>Work</i> will be ignored.
+  setting_total_percent_complete_mode_simple_average: "Simple average"
+  setting_total_percent_complete_mode_simple_average_caption_html: >-
+    <i>Work</i> is ignored and the <i>total % Complete</i> will be a simple average of <i>% Complete</i> values of work packages in the hierarchy.
   setting_accessibility_mode_for_anonymous: "Leisti lengvos prieigos režimą anoniminiams vartotojams"
   setting_user_format: "Naudotojų vardo formatas"
   setting_user_default_timezone: "Numatytoji vartotojo laiko juosta"
@@ -3505,9 +3639,25 @@ lt:
     progress:
       label_note: "Pastaba:"
       modal:
-        work_based_help_text: "% baigta automatiškai skaičiuojama pagal Darbą ir Likusį darbą."
+        work_based_help_text: "Each field is automatically calculated from the two others when possible."
         status_based_help_text: "% baigta nustatoma pagal paketo būseną."
         migration_warning_text: "Darbu paremtame eigos skaičiavimo režime % baigta negali būti nustatomas rankomis ir yra susietas su darbu. Esamos reikšmės buvo išlaikytos, bet negali būti keičiamos. Prašome iš pradžių įveskite darbą."
+      derivation_hints:
+        done_ratio:
+          cleared_because_remaining_work_is_empty: "Cleared because Remaining work is empty."
+          cleared_because_work_is_0h: "Cleared because Work is 0h."
+          derived: "Derived from Work and Remaining work."
+        estimated_hours:
+          cleared_because_remaining_work_is_empty: "Cleared because Remaining work is empty."
+          derived: "Derived from Remaining work and % Complete."
+          same_as_remaining_work: "Set to same value as Remaining work."
+        remaining_hours:
+          cleared_because_work_is_empty: "Cleared because Work is empty."
+          cleared_because_percent_complete_is_empty: "Cleared because % Complete is empty."
+          decreased_by_delta_like_work: "Decreased by %{delta}, matching the reduction in Work."
+          derived: "Derived from Work and % Complete."
+          increased_by_delta_like_work: "Increased by %{delta}, matching the increase in Work."
+          same_as_work: "Set to same value as Work."
     permissions:
       comment: "Komentaras"
       comment_description: "Gali žiūrėti ir komentuoti šį darbo paketą."
@@ -3562,7 +3712,7 @@ lt:
       publishing_denied: "You do not have permission to make project lists public."
       access_warning: "Users will only see the projects they have access to. Sharing project lists does not impact individual project permissions."
       user_details:
-        owner: "List owner"
+        owner: "Sąrašo savininkas"
         can_view_because_public: "Can already view because list is shared with everyone"
         can_manage_public_lists: "Can edit due to global permissions"
       public_flag:
@@ -3698,12 +3848,16 @@ lt:
     close_warning: "Ignoruoti šį perspėjimą."
   oauth:
     application:
+      builtin: Built-in instance application
+      confidential: Confidential
       singular: "OAuth aplikacija"
       plural: "OAuth aplikacijos"
       named: "OAuth aplikacija „%{name}“"
       new: "Nauja OAuth aplikacija"
+      non_confidential: Non confidential
       default_scopes: "(Numatytos apimtys)"
       instructions:
+        enabled: "Enable this application, allowing users to perform authorization grants with it."
         name: "Jūsų aplikacijos pavadinimas. Bus rodomas kitiems naudotojams autorizacijos metu."
         redirect_uri_html: >
           Leidžiami URL, kur gali būti peradresuojami autorizuoti naudotojai. Po vieną įrašą eilutėje. <br/> Jei jūs registruojate darbastalio aplikaciją, naudokite šį URL.
@@ -3712,6 +3866,10 @@ lt:
         client_credential_user_id: "Neprivalomas naudotojo ID, naudojamas kai klientai naudoja šią aplikaciją. Palikite tuščią, jei norite leisti tik viešą prieigą"
         register_intro: "Jei kuriate OAuth API kliento aplikaciją skirtą OpenProject, jūs galite registruoti ją visiems naudotojams naudojant šią formą."
         default_scopes: ""
+    header:
+      builtin_applications: Built-in OAuth applications
+      other_applications: Other OAuth applications
+    empty_application_lists: No OAuth applications have been registered.
     client_id: "Kliento ID"
     client_secret_notice: >
       Tai vienintelis kartas, kai mes galime atspausdinti kliento paslaptį, prašome ją užsirašyti ir laikyti saugiai. Ji turi būti saugoma kaip slaptažodis ir jos vėliau nebebus galima ištraukti iš OpenProject.

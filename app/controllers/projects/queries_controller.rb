@@ -27,14 +27,16 @@
 # ++
 
 class Projects::QueriesController < ApplicationController
-  include Projects::QueryLoading
+  include Queries::Loading
   include OpTurbo::ComponentStream
+  include OpTurbo::DialogStreamHelper
 
   # No need for a more specific authorization check. That is carried out in the contracts.
-  no_authorization_required! :show, :new, :create, :rename, :update, :toggle_public, :destroy
-  before_action :require_login
-  before_action :find_query, only: %i[show rename update destroy toggle_public]
-  before_action :build_query_or_deny_access, only: %i[new create]
+  no_authorization_required! :show, :new, :create, :rename, :update, :toggle_public, :destroy, :destroy_confirmation_modal,
+                             :configure_view_modal
+  before_action :require_login, except: %i[configure_view_modal]
+  before_action :find_query, only: %i[show rename update destroy toggle_public destroy_confirmation_modal]
+  before_action :build_query_or_deny_access, only: %i[new create configure_view_modal]
 
   current_menu_item [:new, :rename, :create, :update] do
     :projects
@@ -45,19 +47,41 @@ class Projects::QueriesController < ApplicationController
   end
 
   def new
-    render template: "/projects/index",
-           layout: "global",
-           locals: { query: @query, state: :edit }
+    respond_to do |format|
+      format.html do
+        render template: "/projects/index",
+               layout: "global",
+               locals: { query: @query, state: :edit }
+      end
+      format.turbo_stream do
+        replace_via_turbo_stream(
+          component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :edit, params:)
+        )
+
+        render turbo_stream: turbo_streams
+      end
+    end
   end
 
   def rename
-    render template: "/projects/index",
-           layout: "global",
-           locals: { query: @query, state: :rename }
+    respond_to do |format|
+      format.html do
+        render template: "/projects/index",
+               layout: "global",
+               locals: { query: @query, state: :rename }
+      end
+      format.turbo_stream do
+        replace_via_turbo_stream(
+          component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :rename, params:)
+        )
+
+        render turbo_stream: turbo_streams
+      end
+    end
   end
 
   def create
-    call = Queries::Projects::ProjectQueries::CreateService
+    call = ProjectQueries::CreateService
              .new(from: @query, user: current_user)
              .call(permitted_query_params)
 
@@ -65,7 +89,7 @@ class Projects::QueriesController < ApplicationController
   end
 
   def update
-    call = Queries::Projects::ProjectQueries::UpdateService
+    call = ProjectQueries::UpdateService
              .new(user: current_user, model: @query)
              .call(permitted_query_params)
 
@@ -76,7 +100,7 @@ class Projects::QueriesController < ApplicationController
     to_be_public = ActiveRecord::Type::Boolean.new.cast(params["value"])
     i18n_key = to_be_public ? "lists.publish" : "lists.unpublish"
 
-    call = Queries::Projects::ProjectQueries::PublishService
+    call = ProjectQueries::PublishService
              .new(user: current_user, model: @query)
              .call(public: to_be_public)
 
@@ -95,10 +119,18 @@ class Projects::QueriesController < ApplicationController
   end
 
   def destroy
-    Queries::Projects::ProjectQueries::DeleteService.new(user: current_user, model: @query)
-                                                    .call
+    ProjectQueries::DeleteService.new(user: current_user, model: @query)
+                                 .call
 
     redirect_to projects_path
+  end
+
+  def destroy_confirmation_modal
+    respond_with_dialog Projects::DeleteListModalComponent.new(query: @query)
+  end
+
+  def configure_view_modal
+    respond_with_dialog Projects::ConfigureViewModalComponent.new(query: @query)
   end
 
   private

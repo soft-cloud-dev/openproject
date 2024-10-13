@@ -40,7 +40,7 @@ module OpenProject::Meeting
              bundled: true do
       project_module :meetings do
         permission :view_meetings,
-                   { meetings: %i[index show download_ics participants_dialog history],
+                   { meetings: %i[index show check_for_updates download_ics participants_dialog history],
                      meeting_agendas: %i[history show diff],
                      meeting_minutes: %i[history show diff],
                      "meetings/menus": %i[show],
@@ -132,7 +132,7 @@ module OpenProject::Meeting
              User.current.allowed_in_any_project?(:view_meetings)
            },
            badge: ->(work_package:, **) {
-             work_package.meetings.where(meetings: { start_time: Time.zone.today.beginning_of_day.. }).count
+             Meeting.visible.where(id: work_package.meetings.select(:id)).count
            },
            caption: :label_meeting_plural
 

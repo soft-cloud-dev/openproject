@@ -53,7 +53,7 @@ module Exports
         ::Exports::Result
           .new format: :csv,
                title: csv_export_filename,
-               content: serialized,
+               content: "\xEF\xBB\xBF#{serialized}", # Make Excel open CSV happy by append UTF8 BOM
                mime_type: "text/csv"
       end
 
@@ -84,7 +84,7 @@ module Exports
       def csv_export_filename
         sane_filename(
           "#{Setting.app_title} #{title} \
-          #{format_time_as_date(Time.zone.now, '%Y-%m-%d')}.csv"
+          #{format_time_as_date(Time.zone.now, format: '%Y-%m-%d')}.csv"
         )
       end
     end

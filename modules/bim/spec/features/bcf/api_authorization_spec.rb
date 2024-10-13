@@ -46,7 +46,7 @@ RSpec.describe "authorization for BCF api", :js, with_config: { edition: "bim" }
 
   it "can create and later authorize and manage an OAuth application grant and then use the access token for the bcf api" do
     # Initially empty
-    expect(page).to have_css(".generic-table--empty-row", text: "There is currently nothing to display")
+    expect(page).to have_test_selector("op-admin-oauth--applications-placeholder")
 
     # Create application
     page.find_test_selector("op-admin-oauth--button-new", text: "OAuth application").click
@@ -57,11 +57,11 @@ RSpec.describe "authorization for BCF api", :js, with_config: { edition: "bim" }
     fill_in "application_redirect_uri", with: "not a url!"
     click_on "Create"
 
-    expect(page).to have_css(".errorExplanation", text: "Redirect URI must be an absolute URI.")
+    expect(page).to have_text("Redirect URI must be an absolute URI.")
     fill_in "application_redirect_uri", with: "urn:ietf:wg:oauth:2.0:oob\nhttps://localhost/my/callback"
     click_on "Create"
 
-    expect(page).to have_css(".op-toast.-success", text: "Successful creation.")
+    expect_flash(message: "Successful creation.")
 
     expect(page).to have_css(".attributes-key-value--key",
                              text: "Client ID")

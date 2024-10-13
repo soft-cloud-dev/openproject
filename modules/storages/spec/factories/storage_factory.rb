@@ -95,7 +95,7 @@ FactoryBot.define do
     trait :as_automatically_managed do
       automatic_management_enabled { true }
       username { "OpenProject" }
-      password { "Password123" }
+      password { ENV.fetch("NEXTCLOUD_LOCAL_GROUP_USER_PASSWORD", "Password123") }
     end
   end
 
@@ -172,6 +172,13 @@ FactoryBot.define do
 
     trait :as_automatically_managed do
       automatically_managed { true }
+    end
+  end
+
+  factory :one_drive_storage_configured, parent: :one_drive_storage do
+    after(:create) do |storage, _evaluator|
+      create(:oauth_client, integration: storage)
+      create(:oauth_application, integration: storage)
     end
   end
 

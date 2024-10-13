@@ -50,7 +50,7 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
       end
 
       it "can upload an image" do
-        find(".attribute-help-texts--create-button").click
+        page.find_test_selector("attribute-help-texts--create-button").click
         select "Status", from: "attribute_help_text_attribute_name"
 
         editor.set_markdown("My attribute help text")
@@ -72,7 +72,7 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
 
         # Create help text
         # -> new
-        find(".attribute-help-texts--create-button").click
+        page.find_test_selector("attribute-help-texts--create-button").click
 
         # Set attributes
         # -> create
@@ -113,7 +113,7 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
         click_button "Save"
 
         # Handle errors
-        expect(page).to have_css("#errorExplanation", text: "Help text can't be blank.")
+        expect_flash(type: :error, message: "Help text can't be blank.")
         SeleniumHubWaiter.wait
         editor.set_markdown("New**help**text")
         click_button "Save"
@@ -138,7 +138,7 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
         visit attribute_help_texts_path
 
         # Create new, status is now blocked
-        find(".attribute-help-texts--create-button").click
+        page.find_test_selector("attribute-help-texts--create-button").click
         expect(page).to have_css("#attribute_help_text_attribute_name option", text: "Assignee")
         expect(page).to have_no_css("#attribute_help_text_attribute_name option", text: "Status")
         visit attribute_help_texts_path

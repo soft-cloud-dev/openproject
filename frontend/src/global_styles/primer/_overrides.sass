@@ -38,7 +38,7 @@
   label
     margin-bottom: 0
   input
-    border-radius: 6px
+    border-radius: var(--borderRadius-medium)
 
 action-menu
   anchored-position
@@ -46,20 +46,21 @@ action-menu
       margin-left: 0
 
 .UnderlineNav
-  @include styled-scroll-bar
+  @include no-visible-scroll-bar
   margin-bottom: 12px
 
-  &-body
-    margin-left: 12px
+  @media screen and (min-width: $breakpoint-sm)
+    scroll-behavior: smooth
 
-  &.op-primer-adjustment--UnderlineNav_spaciousLeft
-    padding-left: 12px
+ul.SegmentedControl
+  margin-left: 0
 
 /* Remove margin-left: 2rem from Breadcrumbs */
 #breadcrumb,
 page-header,
 sub-header,
-.op-work-package-details-tab-component
+.op-work-package-details-tab-component,
+.tabnav
   ol, ul
     margin-left: 0
 
@@ -88,7 +89,12 @@ sub-header,
 .Button.op-app-header--primer-button,
 .Button.op-app-header--primer-button .Button-visual
   color: var(--header-item-font-color)
+  width: auto
 
   &:hover
     background: var(--header-item-bg-hover-color)
     color: var(--header-item-font-hover-color)
+  
+// Todo: Remove once https://github.com/primer/view_components/pull/3087 is merged
+.FormControl-spacingWrapper
+  row-gap: var(--stack-gap-normal)

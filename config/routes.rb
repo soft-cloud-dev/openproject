@@ -63,9 +63,9 @@ Rails.application.routes.draw do
 
   # Add catch method for Rack OmniAuth to allow route helpers
   # Note: This renders a 404 in rails but is caught by omniauth in Rack before
-  get "/auth/failure", to: "account#omniauth_failure"
-  get "/auth/:provider", to: proc { [404, {}, [""]] }, as: "omniauth_start"
-  match "/auth/:provider/callback", to: "account#omniauth_login", as: "omniauth_login", via: %i[get post]
+  get "/auth/failure", to: "omni_auth_login#failure", as: "omni_auth_failure"
+  get "/auth/:provider", to: proc { [404, {}, [""]] }, as: "omni_auth_start"
+  match "/auth/:provider/callback", to: "omni_auth_login#callback", as: "omni_auth_callback", via: %i[get post]
 
   # In case assets are actually delivered by a node server (e.g. in test env)
   # forward requests to the proxy
@@ -169,6 +169,20 @@ Rails.application.routes.draw do
 
       post :reorder_alphabetical
     end
+
+    scope module: :admin do
+      scope module: :custom_fields do
+        resources :projects,
+                  controller: "/admin/custom_fields/custom_field_projects",
+                  only: %i[index new create]
+        resource :project,
+                 controller: "/admin/custom_fields/custom_field_projects",
+                 only: :destroy
+        resources :items,
+                  controller: "/admin/custom_fields/hierarchy/items",
+                  only: :index
+      end
+    end
   end
 
   get "(projects/:project_id)/search" => "search#index", as: "search"
@@ -202,6 +216,11 @@ Rails.application.routes.draw do
     member do
       get :rename
       post :toggle_public
+      get :destroy_confirmation_modal
+    end
+
+    collection do
+      get :configure_view_modal
     end
   end
 
@@ -246,6 +265,10 @@ Rails.application.routes.draw do
       # Destroy uses a get request to prompt the user before the actual DELETE request
       get :destroy_info, as: "confirm_destroy"
       post :deactivate_work_package_attachments
+    end
+
+    collection do
+      get :export_list_modal
     end
 
     resources :versions, only: %i[new create] do
@@ -302,6 +325,7 @@ Rails.application.routes.draw do
         get "/report/:detail" => "work_packages/reports#report_details"
         get "/report" => "work_packages/reports#report"
         get "menu" => "work_packages/menus#show"
+        get "/export_dialog" => "work_packages#export_dialog"
       end
 
       # states managed by client-side routing on work_package#index
@@ -416,9 +440,7 @@ Rails.application.routes.draw do
 
     resource :custom_style, only: %i[update show create], path: "design"
 
-    resources :attribute_help_texts, only: %i(index new create edit update destroy) do
-      get :upsale, to: "attribute_help_texts#upsale", on: :collection, as: :upsale
-    end
+    resources :attribute_help_texts, only: %i(index new create edit update destroy)
 
     resources :groups, except: %i[show] do
       member do
@@ -449,16 +471,20 @@ Rails.application.routes.draw do
     resources :custom_actions, except: :show
 
     namespace :oauth do
-      resources :applications
+      resources :applications do
+        member do
+          post :toggle
+        end
+      end
     end
   end
 
   namespace :admin do
     namespace :settings do
-      SettingsHelper.system_settings_tabs.each do |tab|
-        get tab[:name], controller: tab[:controller], action: :show, as: tab[:name].to_s
-        patch tab[:name], controller: tab[:controller], action: :update, as: "update_#{tab[:name]}"
-      end
+      resource :general, controller: "/admin/settings/general_settings", only: %i[show update]
+      resource :languages, controller: "/admin/settings/languages_settings", only: %i[show update]
+      resource :repositories, controller: "/admin/settings/repositories_settings", only: %i[show update]
+      resource :experimental, controller: "/admin/settings/experimental_settings", only: %i[show update]
 
       resource :authentication, controller: "/admin/settings/authentication_settings", only: %i[show update]
       resource :attachments, controller: "/admin/settings/attachments_settings", only: %i[show update]
@@ -474,7 +500,8 @@ Rails.application.routes.draw do
       resource :api, controller: "/admin/settings/api_settings", only: %i[show update]
       # It is important to have this named something else than "work_packages".
       # Otherwise the angular ui-router will also recognize that as a WorkPackage page and apply according classes.
-      resource :work_package_tracking, controller: "/admin/settings/work_packages_settings", only: %i[show update]
+      resource :work_packages_general, controller: "/admin/settings/work_packages_general", only: %i[show update]
+      resource :progress_tracking, controller: "/admin/settings/progress_tracking", only: %i[show update]
       resource :projects, controller: "/admin/settings/projects_settings", only: %i[show update]
       resource :new_project, controller: "/admin/settings/new_project_settings", only: %i[show update]
       resources :project_custom_fields, controller: "/admin/settings/project_custom_fields" do
@@ -544,6 +571,8 @@ Rails.application.routes.draw do
   resources :work_packages, only: [:index] do
     concerns :shareable
 
+    get "hover_card" => "work_packages/hover_card#show", on: :member
+
     # move bulk of wps
     get "move/new" => "work_packages/moves#new", on: :collection, as: "new_move"
     post "move" => "work_packages/moves#create", on: :collection, as: "move"
@@ -560,6 +589,7 @@ Rails.application.routes.draw do
                controller: "work_packages/progress",
                as: :work_package_progress
     end
+    get "/export_dialog" => "work_packages#export_dialog", on: :collection, as: "export_dialog"
 
     get "/split_view/update_counter" => "work_packages/split_view#update_counter",
         on: :member
@@ -708,9 +738,6 @@ Rails.application.routes.draw do
         defaults: { tab: :overview },
         as: :details,
         work_package_split_view: true
-
-    get "/:work_package_id/close",
-        action: :close_split_view
   end
 
   resources :notifications, only: :index do
@@ -739,9 +766,6 @@ Rails.application.routes.draw do
   end
 
   if OpenProject::Configuration.lookbook_enabled?
-    # Dummy route for the split screen controller
-    get :close_split_view, controller: "homescreen"
-
     mount Lookbook::Engine, at: "/lookbook"
   end
 

@@ -55,8 +55,6 @@ table
         font-style: normal
         font-weight: var(--base-text-weight-bold)
         background-color: #EEEEEE
-    .hours-dec
-      font-size: 0.9em
 
 #workflow_form
   .generic-table--results-container
@@ -144,8 +142,6 @@ tr
 td
   &.hours
     font-weight: var(--base-text-weight-bold)
-    .hours-dec
-      font-size: 0.9em
   .date
     .spot-drop-modal
       display: block
@@ -155,13 +151,13 @@ th.hidden
 
 tr.context-menu-selection,
 tr.-checked
-  background-color: var(--selection-bgColor) !important
+  background-color: var(--codeMirror-selection-bgColor) !important
   &[class*=__hl_background]
     outline: var(--table-row-highlighting-outline-color) solid 2px
 
   td
-    border-top: 1px solid var(--selection-bgColor) !important
-    border-bottom: 1px solid var(--selection-bgColor) !important
+    border-top: 1px solid var(--codeMirror-selection-bgColor) !important
+    border-bottom: 1px solid var(--codeMirror-selection-bgColor) !important
     color: var(--body-font-color) !important
     a
       color: var(--body-font-color) !important
