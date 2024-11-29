@@ -335,7 +335,7 @@ group :development, :test do
   gem "pry-rescue", "~> 1.6.0"
 
   # ruby linting
-  gem "rubocop", require: false
+  gem "rubocop", ">= 1.66.0", require: false
   gem "rubocop-capybara", require: false
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
