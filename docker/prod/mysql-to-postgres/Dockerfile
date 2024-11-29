@@ -1,4 +1,4 @@
-FROM ruby:2.6-stretch
+FROM ruby:3.4.0-preview1-slim
 MAINTAINER operations@openproject.com
 
 ENV PGLOADER_DEPENDENCIES "libsqlite3-dev make curl gawk freetds-dev libzip-dev"
