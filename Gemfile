@@ -95,7 +95,7 @@ gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
 gem "rouge", "~> 4.4.0"
 # HTML sanitization used for html-pipeline
-gem "sanitize", "~> 6.1.0"
+gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
 gem "rinku", "~> 2.0.4", require: %w[rinku rails_rinku]
 # Version parsing with semver
